@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #cbd5e1;
+}
+
+@theme inline {
+  /* Colores Góticos Personalizados */
+  --color-gothic-void: #0a0a0a;
+  --color-gothic-shadow: #1a1a1a;
+  --color-gothic-charcoal: #2a2a2a;
+  --color-gothic-steel: #404040;
+  --color-gothic-slate: #64748b;
+  --color-gothic-silver: #94a3b8;
+  --color-gothic-platinum: #cbd5e1;
+  --color-gothic-crimson: #dc2626;
+  --color-gothic-blood: #991b1b;
+  --color-gothic-purple: #7c3aed;
+  --color-gothic-deep: #5b21b6;
+  
+  /* Variables de tema */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-gothic-void);
+  color: var(--color-gothic-platinum);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   ANIMACIONES GÓTICAS
+   ============================================ */
+
+/* Animación de brillo deslizante (para botones) */
+@keyframes shimmer {
+  0% { 
+    background-position: -250% 0; 
+  }
+  100% { 
+    background-position: 250% 0; 
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite linear;
+}
+
+/* Animación de aparición suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Animación de pulso gótico */
+@keyframes gothicPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+  }
+}
+
+.animate-gothic-pulse {
+  animation: gothicPulse 2s ease-in-out infinite;
+}
+
+/* Animación de flotación */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   UTILIDADES GÓTICAS PERSONALIZADAS
+   ============================================ */
+
+/* Sombra de texto gótica con brillo */
+.text-shadow-gothic {
+  text-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+}
+
+/* Efecto de brillo púrpura */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+/* Efecto de brillo carmesí */
+.glow-crimson {
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+}
+
+/* Efecto de brillo esmeralda */
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* ============================================
+   FORMAS GÓTICAS (CLIP-PATH)
+   ============================================ */
+
+/* Botón con esquinas angulares góticas */
+.clip-path-gothic {
+  clip-path: polygon(
+    8px 0%, 
+    calc(100% - 8px) 0%, 
+    100% 8px, 
+    100% calc(100% - 8px), 
+    calc(100% - 8px) 100%, 
+    8px 100%, 
+    0% calc(100% - 8px), 
+    0% 8px
+  );
+}
+
+/* Badge con forma de escudo */
+.clip-path-badge {
+  border-radius: 4px;
+  position: relative;
+}
+
+.clip-path-badge::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  opacity: 0.3;
+}
+
+/* ============================================
+   EFECTOS DE VIDRIO Y CRISTAL
+   ============================================ */
+
+.glass-effect {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Efecto de vidrio emplomado (stained glass) */
+.stained-glass {
+  background: 
+    linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(220, 38, 38, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+  backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   BORDES Y LÍNEAS DECORATIVAS
+   ============================================ */
+
+/* Línea decorativa gótica horizontal */
+.gothic-divider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    rgba(124, 58, 237, 0.5) 20%, 
+    rgba(124, 58, 237, 0.8) 50%, 
+    rgba(124, 58, 237, 0.5) 80%, 
+    transparent
+  );
+}
+
+.gothic-divider::before,
+.gothic-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(124, 58, 237, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
+}
+
+.gothic-divider::before {
+  left: 0;
+}
+
+.gothic-divider::after {
+  right: 0;
+}
+
+/* ============================================
+   SCROLLBAR GÓTICO
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-left: 1px solid #2a2a2a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 100%);
+  border-radius: 6px;
+  border: 2px solid #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* ============================================
+   SELECCIÓN DE TEXTO
+   ============================================ */
+
+::selection {
+  background-color: rgba(124, 58, 237, 0.3);
+  color: #cbd5e1;
+}
+
+::-moz-selection {
+  background-color: rgba(124, 58, 237, 0.3);
+  color: #cbd5e1;
+}
