@@ -11,27 +11,27 @@ export default function Home() {
   const [activeCard, setActiveCard] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#050505] to-[#0a0a0a]">
       {/* Header */}
-      <header className="border-b border-gray-800 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-[#1a1a1a] bg-[#0a0a0a]/90 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.4)]">
-                <Skull className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-[#2d2d2d] to-[#1a1a1a] border border-[#3a3a3a] rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                <Skull className="w-6 h-6 text-gray-300" />
               </div>
               <h1 className="text-2xl font-bold text-gray-100">OBSIDIAN</h1>
               <Badge variant="primary" size="sm" glow>v1.0</Badge>
             </div>
             
             <nav className="hidden md:flex gap-4 items-center">
-              <a href="#inicio" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">
+              <a href="#inicio" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
                 Inicio
               </a>
-              <a href="#features" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">
+              <a href="#features" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
                 Características
               </a>
-              <a href="#components" className="text-gray-400 hover:text-purple-400 transition-colors duration-200">
+              <a href="#components" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
                 Componentes
               </a>
               <Button variant="ghost" size="sm">
@@ -47,8 +47,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto text-center">
           <div className="mb-8 flex justify-center animate-fadeIn">
             <div className="relative animate-float">
-              <Moon className="w-20 h-20 text-purple-500" />
-              <div className="absolute inset-0 blur-2xl bg-purple-500/30 rounded-full animate-gothic-pulse"></div>
+              <Moon className="w-20 h-20 text-gray-400" />
+              <div className="absolute inset-0 blur-2xl bg-gray-500/10 rounded-full animate-subtle-pulse"></div>
             </div>
           </div>
           
@@ -58,7 +58,7 @@ export default function Home() {
             <Badge variant="success" icon={Sword}>Powerful</Badge>
           </div>
           
-          <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-gray-300 to-purple-400 bg-clip-text text-transparent animate-fadeIn text-shadow-gothic">
+          <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 bg-clip-text text-transparent animate-fadeIn">
             Gothic Dark Experience
           </h2>
           
@@ -81,24 +81,26 @@ export default function Home() {
       </section>
 
       {/* Components Showcase */}
-      <section id="components" className="py-16 px-4 bg-gray-950/30">
+      <section id="components" className="py-16 px-4 bg-[#050505]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-4xl font-bold text-gray-100 mb-4">
               Componentes Góticos
             </h3>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Colección de componentes con estilo gótico dark, bordes ornamentados y efectos de luz místicos
+              Colección de componentes con estilo gótico dark, bordes ornamentados y efectos sutiles
             </p>
           </div>
 
           {/* Buttons Demo */}
           <div className="mb-16">
-            <h4 className="text-2xl font-bold text-purple-400 mb-6 text-center">Botones</h4>
+            <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Botones</h4>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button variant="primary">Primary</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="danger">Danger</Button>
+              <Button variant="success">Success</Button>
+              <Button variant="warning">Warning</Button>
               <Button variant="ghost">Ghost</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="primary" size="sm">Small</Button>
@@ -111,13 +113,15 @@ export default function Home() {
 
           {/* Badges Demo */}
           <div className="mb-16">
-            <h4 className="text-2xl font-bold text-purple-400 mb-6 text-center">Badges</h4>
+            <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Badges</h4>
             <div className="flex flex-wrap gap-3 justify-center">
               <Badge variant="default">Default</Badge>
               <Badge variant="primary">Primary</Badge>
+              <Badge variant="secondary">Secondary</Badge>
               <Badge variant="success">Success</Badge>
               <Badge variant="danger">Danger</Badge>
               <Badge variant="warning">Warning</Badge>
+              <Badge variant="info">Info</Badge>
               <Badge variant="ghost">Ghost</Badge>
               <Badge variant="outline">Outline</Badge>
               <Badge variant="primary" glow>Glow Effect</Badge>
@@ -138,7 +142,7 @@ export default function Home() {
             Características Destacadas
           </h3>
           <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-            Cards con marcos ornamentados, esquinas angulares y efectos de vidrio emplomado
+            Cards con marcos ornamentados, esquinas angulares y efectos sutiles
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -156,13 +160,13 @@ export default function Home() {
             />
 
             <Card
-              variant="elevated"
+              variant="light"
               icon={Flame}
-              title="Animaciones Fluidas"
+              title="Variante Clara"
               subtitle="Premium Feature"
-              description="Transiciones suaves y animaciones elegantes que dan vida a cada interacción con efectos visuales cautivadores inspirados en la arquitectura gótica."
+              description="Card con fondo claro que contrasta perfectamente con el fondo oscuro de la aplicación."
               footer={
-                <Button variant="ghost" size="sm" className="w-full">
+                <Button variant="primary" size="sm" className="w-full">
                   Ver Demo
                 </Button>
               }
@@ -189,7 +193,7 @@ export default function Home() {
             <Card
               variant="outlined"
               title="Outlined Card"
-              description="Card con borde púrpura y fondo transparente, perfecto para destacar contenido importante."
+              description="Card con borde sutil y fondo transparente, perfecto para destacar contenido importante."
             />
 
             <Card
@@ -203,19 +207,20 @@ export default function Home() {
       </section>
 
       {/* Product Cards Section */}
-      <section className="py-16 px-4 bg-black/30">
+      <section className="py-16 px-4 bg-[#050505]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-4xl font-bold text-gray-100 mb-4">
               Product Cards Góticas
             </h3>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Cards de producto con imágenes que "flotan" fuera del contenedor, optimizadas para SEO
+              Cards de producto con imágenes que "flotan" fuera del contenedor, variantes claras y oscuras
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Producto 1 - Con imagen PNG transparente */}
+          {/* Productos con variante oscura (default) */}
+          <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Variante Oscura</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <ProductCard
               image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"
               imageAlt="Audífonos Premium Inalámbricos"
@@ -233,7 +238,6 @@ export default function Home() {
               onQuickView={() => alert('Vista rápida!')}
             />
 
-            {/* Producto 2 - Con badge personalizado */}
             <ProductCard
               image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
               imageAlt="Reloj Inteligente Premium"
@@ -252,7 +256,6 @@ export default function Home() {
               onQuickView={() => alert('Vista rápida!')}
             />
 
-            {/* Producto 3 - Sin descuento - MISMO imageSize */}
             <ProductCard
               image="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80"
               imageAlt="Gafas de Sol Clásicas"
@@ -269,48 +272,60 @@ export default function Home() {
             />
           </div>
 
-          {/* Ejemplo con variante "contained" para imágenes rectangulares */}
-          <div className="mt-12">
-            <h4 className="text-2xl font-bold text-purple-400 mb-6 text-center">
-              Variante Contained (para imágenes rectangulares)
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <ProductCard
-                image="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80"
-                imageAlt="Zapatillas Deportivas"
-                title="Zapatillas Running Pro"
-                description="Máximo confort y rendimiento para tus entrenamientos más intensos"
-                price={159.99}
-                originalPrice={199.99}
-                rating={4.3}
-                reviews={45}
-                variant="elevated"
-                imagePosition="contained"
-                imageSize="large"
-                onAddToCart={() => alert('Agregado al carrito!')}
-              />
+          {/* Productos con variante clara */}
+          <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Variante Clara</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <ProductCard
+              image="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80"
+              imageAlt="Zapatillas Deportivas"
+              title="Zapatillas Running Pro"
+              description="Máximo confort y rendimiento para tus entrenamientos más intensos"
+              price={159.99}
+              originalPrice={199.99}
+              rating={4.3}
+              reviews={45}
+              variant="light"
+              imagePosition="float"
+              imageSize="large"
+              onAddToCart={() => alert('Agregado al carrito!')}
+            />
 
-              <ProductCard
-                image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
-                imageAlt="Zapatillas Urbanas"
-                title="Urban Sneakers"
-                description="Estilo y comodidad para el día a día en la ciudad"
-                price={129.99}
-                rating={4.7}
-                reviews={201}
-                discount={35}
-                variant="default"
-                imagePosition="contained"
-                imageSize="large"
-                onAddToCart={() => alert('Agregado al carrito!')}
-              />
-            </div>
+            <ProductCard
+              image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
+              imageAlt="Zapatillas Urbanas"
+              title="Urban Sneakers"
+              description="Estilo y comodidad para el día a día en la ciudad"
+              price={129.99}
+              rating={4.7}
+              reviews={201}
+              discount={35}
+              variant="light"
+              imagePosition="float"
+              imageSize="large"
+              onAddToCart={() => alert('Agregado al carrito!')}
+            />
+
+            <ProductCard
+              image="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800&q=80"
+              imageAlt="Cámara Profesional"
+              title="Cámara DSLR Pro"
+              description="Captura momentos inolvidables con calidad profesional"
+              price={899.99}
+              rating={4.9}
+              reviews={512}
+              badge="TOP"
+              variant="light"
+              imagePosition="float"
+              imageSize="large"
+              onAddToCart={() => alert('Agregado al carrito!')}
+              onWishlist={() => alert('Agregado a favoritos!')}
+            />
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-gray-950/50">
+      <section className="py-16 px-4 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -320,7 +335,7 @@ export default function Home() {
               { number: "24/7", label: "Soporte", badge: "default" }
             ].map((stat, index) => (
               <div key={index} className="text-center group cursor-pointer">
-                <div className="text-4xl sm:text-5xl font-bold text-purple-400 mb-2 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl sm:text-5xl font-bold text-gray-300 mb-2 group-hover:scale-110 transition-transform duration-300">
                   {stat.number}
                 </div>
                 <div className="text-gray-500 text-sm uppercase tracking-wide mb-2">
@@ -364,11 +379,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 bg-gray-950 py-8">
+      <footer className="border-t border-[#1a1a1a] bg-[#0a0a0a] py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <Skull className="w-6 h-6 text-purple-500" />
+              <Skull className="w-6 h-6 text-gray-500" />
               <span className="text-gray-400 text-sm">
                 © 2024 Obsidian. Todos los derechos reservados.
               </span>

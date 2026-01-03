@@ -2,22 +2,39 @@
 
 :root {
   --background: #0a0a0a;
-  --foreground: #cbd5e1;
+  --foreground: #e2e8f0;
 }
 
 @theme inline {
-  /* Colores Góticos Personalizados */
-  --color-gothic-void: #0a0a0a;
-  --color-gothic-shadow: #1a1a1a;
-  --color-gothic-charcoal: #2a2a2a;
-  --color-gothic-steel: #404040;
-  --color-gothic-slate: #64748b;
-  --color-gothic-silver: #94a3b8;
-  --color-gothic-platinum: #cbd5e1;
-  --color-gothic-crimson: #dc2626;
-  --color-gothic-blood: #991b1b;
-  --color-gothic-purple: #7c3aed;
-  --color-gothic-deep: #5b21b6;
+  /* ============================================
+     PALETA GÓTICA DARK REFINADA
+     Enfoque: Oscuridad, elegancia, metales
+     ============================================ */
+  
+  /* NEGROS Y SOMBRAS - Base principal */
+  --color-gothic-void: #050505;        /* Negro absoluto - fondo más profundo */
+  --color-gothic-abyss: #0a0a0a;       /* Negro abismo - fondo principal */
+  --color-gothic-shadow: #121212;      /* Negro sombra - fondos secundarios */
+  --color-gothic-obsidian: #1a1a1a;    /* Obsidiana - elementos elevados */
+  
+  /* GRISES METÁLICOS - Estructura y bordes */
+  --color-gothic-iron: #242424;        /* Hierro - superficies base */
+  --color-gothic-steel: #2d2d2d;       /* Acero - elementos interactivos */
+  --color-gothic-gunmetal: #3a3a3a;    /* Metal de cañón - bordes activos */
+  --color-gothic-pewter: #4a4a4a;      /* Peltre - divisores */
+  
+  /* PLATEADOS - Textos y acentos claros */
+  --color-gothic-ash: #6b7280;         /* Ceniza - texto terciario */
+  --color-gothic-smoke: #9ca3af;       /* Humo - texto secundario */
+  --color-gothic-silver: #d1d5db;      /* Plateado - texto principal */
+  --color-gothic-chrome: #e5e7eb;      /* Cromado - texto destacado */
+  --color-gothic-pearl: #f3f4f6;       /* Perla - texto brillante */
+  
+  /* ACENTOS GÓTICOS SUTILES - Uso mínimo y discreto */
+  --color-gothic-amethyst: #6b21a8;    /* Amatista oscura - acento primario sutil */
+  --color-gothic-wine: #7c2d12;        /* Vino - acento peligro sutil */
+  --color-gothic-crimson: #991b1b;     /* Carmesí - estados de error */
+  --color-gothic-plum: #4c1d95;        /* Ciruela - hover sutil */
   
   /* Variables de tema */
   --color-background: var(--background);
@@ -27,8 +44,8 @@
 }
 
 body {
-  background: var(--color-gothic-void);
-  color: var(--color-gothic-platinum);
+  background: var(--color-gothic-abyss);
+  color: var(--color-gothic-silver);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
@@ -40,28 +57,28 @@ body {
 }
 
 /* ============================================
-   ANIMACIONES GÓTICAS
+   ANIMACIONES GÓTICAS SUTILES
    ============================================ */
 
-/* Animación de brillo deslizante (para botones) */
-@keyframes shimmer {
+/* Brillo metálico sutil */
+@keyframes metalSheen {
   0% { 
-    background-position: -250% 0; 
+    background-position: -200% center; 
   }
   100% { 
-    background-position: 250% 0; 
+    background-position: 200% center; 
   }
 }
 
-.animate-shimmer {
-  animation: shimmer 3s infinite linear;
+.animate-metal-sheen {
+  animation: metalSheen 4s ease-in-out infinite;
 }
 
-/* Animación de aparición suave */
+/* Aparición suave */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -70,116 +87,96 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.6s ease-out;
+  animation: fadeIn 0.5s ease-out;
 }
 
-/* Animación de pulso gótico */
-@keyframes gothicPulse {
+/* Pulso sutil para elementos importantes */
+@keyframes subtlePulse {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 0 0 0 rgba(107, 33, 168, 0);
   }
   50% {
-    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+    box-shadow: 0 0 20px 0 rgba(107, 33, 168, 0.15);
   }
 }
 
-.animate-gothic-pulse {
-  animation: gothicPulse 2s ease-in-out infinite;
-}
-
-/* Animación de flotación */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.animate-subtle-pulse {
+  animation: subtlePulse 3s ease-in-out infinite;
 }
 
 /* ============================================
-   UTILIDADES GÓTICAS PERSONALIZADAS
+   UTILIDADES GÓTICAS
    ============================================ */
 
-/* Sombra de texto gótica con brillo */
-.text-shadow-gothic {
-  text-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+/* Sombra de texto metálica */
+.text-shadow-metal {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Efecto de brillo púrpura */
-.glow-purple {
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+/* Efecto de brillo plateado muy sutil */
+.glow-silver {
+  box-shadow: 0 0 15px rgba(209, 213, 219, 0.1);
 }
 
-/* Efecto de brillo carmesí */
-.glow-crimson {
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
-}
-
-/* Efecto de brillo esmeralda */
-.glow-emerald {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+/* Efecto de brillo amatista muy sutil */
+.glow-amethyst {
+  box-shadow: 0 0 15px rgba(107, 33, 168, 0.15);
 }
 
 /* ============================================
    FORMAS GÓTICAS (CLIP-PATH)
    ============================================ */
 
-/* Botón con esquinas angulares góticas */
+/* Esquinas angulares góticas sutiles */
 .clip-path-gothic {
   clip-path: polygon(
-    8px 0%, 
-    calc(100% - 8px) 0%, 
-    100% 8px, 
-    100% calc(100% - 8px), 
-    calc(100% - 8px) 100%, 
-    8px 100%, 
-    0% calc(100% - 8px), 
-    0% 8px
+    6px 0%, 
+    calc(100% - 6px) 0%, 
+    100% 6px, 
+    100% calc(100% - 6px), 
+    calc(100% - 6px) 100%, 
+    6px 100%, 
+    0% calc(100% - 6px), 
+    0% 6px
   );
 }
 
-/* Badge con forma de escudo */
+/* Badge con detalle superior sutil */
 .clip-path-badge {
-  border-radius: 4px;
+  border-radius: 3px;
   position: relative;
 }
 
 .clip-path-badge::before {
   content: '';
   position: absolute;
-  top: -2px;
+  top: -1px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid currentColor;
-  opacity: 0.3;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid currentColor;
+  opacity: 0.2;
 }
 
 /* ============================================
-   EFECTOS DE VIDRIO Y CRISTAL
+   EFECTOS DE VIDRIO Y PROFUNDIDAD
    ============================================ */
 
-.glass-effect {
-  background: rgba(26, 26, 26, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+.glass-dark {
+  background: rgba(18, 18, 18, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-/* Efecto de vidrio emplomado (stained glass) */
-.stained-glass {
+/* Efecto de vidrio con textura metálica */
+.glass-metal {
   background: 
-    linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(220, 38, 38, 0.1) 0%, transparent 50%),
-    linear-gradient(45deg, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-  backdrop-filter: blur(10px);
+    linear-gradient(135deg, rgba(42, 42, 42, 0.8) 0%, rgba(26, 26, 26, 0.9) 100%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(74, 74, 74, 0.3);
 }
 
 /* ============================================
@@ -189,13 +186,13 @@ body {
 /* Línea decorativa gótica horizontal */
 .gothic-divider {
   position: relative;
-  height: 2px;
+  height: 1px;
   background: linear-gradient(
     to right, 
     transparent, 
-    rgba(124, 58, 237, 0.5) 20%, 
-    rgba(124, 58, 237, 0.8) 50%, 
-    rgba(124, 58, 237, 0.5) 80%, 
+    rgba(74, 74, 74, 0.4) 20%, 
+    rgba(107, 33, 168, 0.3) 50%, 
+    rgba(74, 74, 74, 0.4) 80%, 
     transparent
   );
 }
@@ -206,11 +203,11 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  background: rgba(124, 58, 237, 0.6);
+  width: 6px;
+  height: 6px;
+  background: rgba(107, 33, 168, 0.3);
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
+  box-shadow: 0 0 6px rgba(107, 33, 168, 0.4);
 }
 
 .gothic-divider::before {
@@ -222,28 +219,28 @@ body {
 }
 
 /* ============================================
-   SCROLLBAR GÓTICO
+   SCROLLBAR DARK GOTHIC
    ============================================ */
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
-  border-left: 1px solid #2a2a2a;
+  background: #0a0a0a;
+  border-left: 1px solid #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 100%);
-  border-radius: 6px;
-  border: 2px solid #1a1a1a;
+  background: linear-gradient(180deg, #3a3a3a 0%, #2d2d2d 100%);
+  border-radius: 5px;
+  border: 2px solid #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
-  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+  background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
+  box-shadow: 0 0 8px rgba(107, 33, 168, 0.2);
 }
 
 /* ============================================
@@ -251,11 +248,11 @@ body {
    ============================================ */
 
 ::selection {
-  background-color: rgba(124, 58, 237, 0.3);
-  color: #cbd5e1;
+  background-color: rgba(107, 33, 168, 0.25);
+  color: #f3f4f6;
 }
 
 ::-moz-selection {
-  background-color: rgba(124, 58, 237, 0.3);
-  color: #cbd5e1;
+  background-color: rgba(107, 33, 168, 0.25);
+  color: #f3f4f6;
 }
