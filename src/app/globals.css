@@ -256,3 +256,63 @@ body {
   background-color: rgba(107, 33, 168, 0.25);
   color: #f3f4f6;
 }
+
+/* ============================================
+   FORMAS GÓTICAS MEDIEVALES (CLIP-PATH)
+   ============================================ */
+
+/* Botones estilo piedra tallada medieval - Tamaño pequeño */
+.clip-path-gothic-sm {
+  clip-path: polygon(
+    0 4px,
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px)
+  );
+}
+
+/* Botones estilo piedra tallada medieval - Tamaño mediano */
+.clip-path-gothic-md {
+  clip-path: polygon(
+    0 6px,
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px)
+  );
+}
+
+/* Botones estilo piedra tallada medieval - Tamaño grande */
+.clip-path-gothic-lg {
+  clip-path: polygon(
+    0 8px,
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+}
+
+/* Botones estilo piedra tallada medieval - Tamaño extra grande */
+.clip-path-gothic-xl {
+  clip-path: polygon(
+    0 10px,
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}

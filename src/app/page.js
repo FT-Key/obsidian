@@ -6,6 +6,8 @@ import Button from './components/ui/Button';
 import Card from './components/ui/Card';
 import Badge from './components/ui/Badge';
 import ProductCard from './components/ui/ProductCard';
+import Carousel from './components/ui/Carousel';
+import { carouselItems } from '@/constants/carousel';
 
 export default function Home() {
   const [activeCard, setActiveCard] = useState(null);
@@ -23,7 +25,7 @@ export default function Home() {
               <h1 className="text-2xl font-bold text-gray-100">OBSIDIAN</h1>
               <Badge variant="primary" size="sm" glow>v1.0</Badge>
             </div>
-            
+
             <nav className="hidden md:flex gap-4 items-center">
               <a href="#inicio" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
                 Inicio
@@ -51,17 +53,17 @@ export default function Home() {
               <div className="absolute inset-0 blur-2xl bg-gray-500/10 rounded-full animate-subtle-pulse"></div>
             </div>
           </div>
-          
+
           <div className="flex justify-center gap-2 mb-6">
             <Badge variant="primary" icon={Crown} glow>Premium</Badge>
             <Badge variant="outline" icon={Shield}>Secure</Badge>
             <Badge variant="success" icon={Sword}>Powerful</Badge>
           </div>
-          
+
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 bg-clip-text text-transparent animate-fadeIn">
             Gothic Dark Experience
           </h2>
-          
+
           <p className="text-lg sm:text-xl text-gray-400 mb-10 max-w-2xl mx-auto animate-fadeIn">
             Sumérgete en una experiencia visual oscura y elegante, donde las sombras cobran vida y el diseño gótico moderno te envuelve.
           </p>
@@ -144,7 +146,7 @@ export default function Home() {
           <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
             Cards con marcos ornamentados, esquinas angulares y efectos sutiles
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <Card
               variant="default"
@@ -378,6 +380,10 @@ export default function Home() {
         </div>
       </section>
 
+      <section>
+        <Carousel items={carouselItems} />
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-[#1a1a1a] bg-[#0a0a0a] py-8">
         <div className="max-w-7xl mx-auto px-4">
@@ -388,7 +394,7 @@ export default function Home() {
                 © 2024 Obsidian. Todos los derechos reservados.
               </span>
             </div>
-            
+
             <div className="flex gap-4">
               <Button variant="ghost" size="sm" icon={Twitter}>Twitter</Button>
               <Button variant="ghost" size="sm" icon={Github}>GitHub</Button>
