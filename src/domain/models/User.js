@@ -1,6 +1,6 @@
 // models/User.js
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import argon2 from 'argon2';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -73,16 +73,28 @@ userSchema.virtual('point_movements', {
   foreignField: 'user'
 });
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password_hash')) return next();
-  this.password_hash = await bcrypt.hash(this.password_hash, 12);
-  next();
+// Hash password before saving using Argon2
+// ⚠️ IMPORTANTE: NO uses next() cuando usas async/await
+userSchema.pre('save', async function() {
+  // Solo hashear si el password fue modificado
+  if (!this.isModified('password_hash')) return;
+  
+  // Argon2id es el modo recomendado (híbrido)
+  this.password_hash = await argon2.hash(this.password_hash, {
+    type: argon2.argon2id,
+    memoryCost: 2 ** 16, // 64 MB
+    timeCost: 3,         // 3 iteraciones
+    parallelism: 1       // 1 hilo
+  });
 });
 
-// Method to compare password
+// Method to compare password using Argon2
 userSchema.methods.comparePassword = async function(password) {
-  return await bcrypt.compare(password, this.password_hash);
+  try {
+    return await argon2.verify(this.password_hash, password);
+  } catch (error) {
+    return false;
+  }
 };
 
 // Indexes

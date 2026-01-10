@@ -1,408 +1,385 @@
-"use client";
+'use client';
 
-import React, { useState } from 'react';
-import { Moon, Skull, Ghost, Flame, Github, Twitter, Mail, Sword, Shield, Crown } from 'lucide-react';
-import Button from './components/ui/Button';
-import Card from './components/ui/Card';
-import Badge from './components/ui/Badge';
-import ProductCard from './components/ui/ProductCard';
-import Carousel from './components/ui/Carousel';
+import { Sparkles, Calendar, ShoppingBag, Heart, Star, ArrowRight, CheckCircle, Users, Award, TrendingUp, Crown, Shield, Flame } from 'lucide-react';
+import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import ProductCard from '@/components/ui/ProductCard';
+import Carousel from '@/components/ui/Carousel';
 import { carouselItems } from '@/constants/carousel';
 
-export default function Home() {
-  const [activeCard, setActiveCard] = useState(null);
+export default function HomePage() {
+  const services = [
+    {
+      title: 'Esmaltado Premium',
+      description: 'Esmaltado de uñas con productos de alta calidad y acabado perfecto',
+      price: 'Desde $2,500',
+      icon: Sparkles
+    },
+    {
+      title: 'Nail Art',
+      description: 'Diseños personalizados y creativos para tus uñas',
+      price: 'Desde $3,500',
+      icon: Star
+    },
+    {
+      title: 'Manicure Completa',
+      description: 'Tratamiento completo para el cuidado y embellecimiento de tus manos',
+      price: 'Desde $3,000',
+      icon: Crown
+    },
+    {
+      title: 'Pedicure Spa',
+      description: 'Experiencia relajante con tratamiento completo para tus pies',
+      price: 'Desde $3,800',
+      icon: Flame
+    }
+  ];
+
+  const products = [
+    {
+      image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80',
+      imageAlt: 'Bolso de Cuero Premium',
+      title: 'Bolso de Cuero Premium',
+      description: 'Elegante bolso de cuero genuino con acabados de alta calidad',
+      price: 12999,
+      originalPrice: 18999,
+      rating: 4.8,
+      reviews: 124,
+      badge: 'OFERTA',
+      variant: 'default'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80',
+      imageAlt: 'Vestido Elegante',
+      title: 'Vestido Elegante',
+      description: 'Diseño sofisticado perfecto para cualquier ocasión especial',
+      price: 8999,
+      rating: 4.9,
+      reviews: 89,
+      variant: 'premium'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?w=800&q=80',
+      imageAlt: 'Gafas de Sol',
+      title: 'Gafas de Sol Premium',
+      description: 'Protección UV400 con diseño moderno y elegante',
+      price: 3499,
+      originalPrice: 4999,
+      rating: 4.7,
+      reviews: 203,
+      variant: 'glass'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&q=80',
+      imageAlt: 'Conjunto Casual',
+      title: 'Conjunto Casual Chic',
+      description: 'Comodidad y estilo para el día a día',
+      price: 6999,
+      rating: 4.6,
+      reviews: 156,
+      badge: 'NUEVO',
+      variant: 'light'
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#050505] to-[#0a0a0a]">
-      {/* Header */}
-      <header className="border-b border-[#1a1a1a] bg-[#0a0a0a]/90 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#2d2d2d] to-[#1a1a1a] border border-[#3a3a3a] rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                <Skull className="w-6 h-6 text-gray-300" />
-              </div>
-              <h1 className="text-2xl font-bold text-gray-100">OBSIDIAN</h1>
-              <Badge variant="primary" size="sm" glow>v1.0</Badge>
-            </div>
-
-            <nav className="hidden md:flex gap-4 items-center">
-              <a href="#inicio" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
-                Inicio
-              </a>
-              <a href="#features" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
-                Características
-              </a>
-              <a href="#components" className="text-gray-400 hover:text-gray-200 transition-colors duration-200">
-                Componentes
-              </a>
-              <Button variant="ghost" size="sm">
-                Acceder
-              </Button>
-            </nav>
-          </div>
+    <div className="bg-[#0a0a0a]">
+      
+      {/* Hero Section - Fixed Background */}
+      <section 
+        id="hero" 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1920&q=80')",
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/70 via-[#0a0a0a]/85 to-[#0a0a0a]"></div>
         </div>
-      </header>
 
-      {/* Hero Section */}
-      <section id="inicio" className="py-20 px-4 sm:py-32">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="mb-8 flex justify-center animate-fadeIn">
-            <div className="relative animate-float">
-              <Moon className="w-20 h-20 text-gray-400" />
-              <div className="absolute inset-0 blur-2xl bg-gray-500/10 rounded-full animate-subtle-pulse"></div>
-            </div>
-          </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Badge variant="primary" icon={Sparkles} glow className="mb-8">
+            Belleza y Estilo Premium
+          </Badge>
 
-          <div className="flex justify-center gap-2 mb-6">
-            <Badge variant="primary" icon={Crown} glow>Premium</Badge>
-            <Badge variant="outline" icon={Shield}>Secure</Badge>
-            <Badge variant="success" icon={Sword}>Powerful</Badge>
-          </div>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 text-shadow-metal">
+            <span className="bg-gradient-to-r from-[#f3f4f6] via-[#e5e7eb] to-[#d1d5db] bg-clip-text text-transparent">
+              Descubre Tu
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-[#6b21a8] via-[#7c2d95] to-[#6b21a8] bg-clip-text text-transparent">
+              Estilo Único
+            </span>
+          </h1>
 
-          <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 bg-clip-text text-transparent animate-fadeIn">
-            Gothic Dark Experience
-          </h2>
-
-          <p className="text-lg sm:text-xl text-gray-400 mb-10 max-w-2xl mx-auto animate-fadeIn">
-            Sumérgete en una experiencia visual oscura y elegante, donde las sombras cobran vida y el diseño gótico moderno te envuelve.
+          <p className="text-xl text-[#9ca3af] mb-12 max-w-2xl mx-auto">
+            Servicios de belleza premium y productos exclusivos de moda para realzar tu personalidad
           </p>
 
-          <div className="flex gap-4 justify-center flex-wrap animate-fadeIn">
-            <Button variant="primary" size="lg" icon={Flame}>
-              Comenzar Ahora
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button variant="primary" size="lg" icon={Calendar}>
+              Reservar Turno
             </Button>
-            <Button variant="secondary" size="lg" icon={Ghost}>
-              Explorar Más
+            <Button variant="secondary" size="lg" icon={ShoppingBag}>
+              Ver Productos
             </Button>
-            <Button variant="ghost" size="lg" icon={Skull}>
-              Documentación
-            </Button>
+          </div>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-[#6b21a8] rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-[#6b21a8] rounded-full"></div>
           </div>
         </div>
       </section>
 
-      {/* Components Showcase */}
-      <section id="components" className="py-16 px-4 bg-[#050505]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-4xl font-bold text-gray-100 mb-4">
-              Componentes Góticos
-            </h3>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Colección de componentes con estilo gótico dark, bordes ornamentados y efectos sutiles
+      {/* Services Section */}
+      <section 
+        id="servicios" 
+        className="relative min-h-screen flex items-center py-20 overflow-hidden"
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1920&q=80')",
+            filter: 'brightness(0.3)',
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4">Nuestros Servicios</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+              Servicios de Belleza Premium
+            </h2>
+            <p className="text-[#9ca3af] text-lg max-w-2xl mx-auto">
+              Tratamientos profesionales con productos de alta calidad
             </p>
           </div>
 
-          {/* Buttons Demo */}
-          <div className="mb-16">
-            <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Botones</h4>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button variant="primary">Primary</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="danger">Danger</Button>
-              <Button variant="success">Success</Button>
-              <Button variant="warning">Warning</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="primary" size="sm">Small</Button>
-              <Button variant="primary" size="lg">Large</Button>
-              <Button variant="primary" icon={Flame} iconPosition="left">With Icon</Button>
-              <Button variant="secondary" loading>Loading...</Button>
-              <Button variant="danger" disabled>Disabled</Button>
-            </div>
-          </div>
-
-          {/* Badges Demo */}
-          <div className="mb-16">
-            <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Badges</h4>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <Badge variant="default">Default</Badge>
-              <Badge variant="primary">Primary</Badge>
-              <Badge variant="secondary">Secondary</Badge>
-              <Badge variant="success">Success</Badge>
-              <Badge variant="danger">Danger</Badge>
-              <Badge variant="warning">Warning</Badge>
-              <Badge variant="info">Info</Badge>
-              <Badge variant="ghost">Ghost</Badge>
-              <Badge variant="outline">Outline</Badge>
-              <Badge variant="primary" glow>Glow Effect</Badge>
-              <Badge variant="success" icon={Shield}>With Icon</Badge>
-              <Badge variant="danger" size="lg">Large</Badge>
-              <Badge variant="primary" removable onRemove={() => alert('Removed!')}>
-                Removable
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Cards Section */}
-      <section id="features" className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-gray-100">
-            Características Destacadas
-          </h3>
-          <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-            Cards con marcos ornamentados, esquinas angulares y efectos sutiles
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card
-              variant="default"
-              icon={Ghost}
-              title="Diseño Oscuro"
-              description="Paleta de colores gótica con negros profundos, grises elegantes y plateados místicos que crean una atmósfera única y envolvente."
-              footer={
-                <div className="flex gap-2">
-                  <Badge variant="primary" size="sm">Dark</Badge>
-                  <Badge variant="outline" size="sm">Elegant</Badge>
-                </div>
-              }
-            />
-
-            <Card
-              variant="light"
-              icon={Flame}
-              title="Variante Clara"
-              subtitle="Premium Feature"
-              description="Card con fondo claro que contrasta perfectamente con el fondo oscuro de la aplicación."
-              footer={
-                <Button variant="primary" size="sm" className="w-full">
-                  Ver Demo
-                </Button>
-              }
-            />
-
-            <Card
-              variant="glass"
-              icon={Skull}
-              title="Componentes Modernos"
-              description="UI components completamente personalizables construidos con las últimas tecnologías web y mejores prácticas de desarrollo moderno."
-              footer={
-                <div className="flex justify-between items-center">
-                  <Badge variant="success" size="sm">Ready</Badge>
-                  <Button variant="primary" size="sm">
-                    Explorar
-                  </Button>
-                </div>
-              }
-            />
-          </div>
-
-          {/* Card Variants Demo */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card
-              variant="outlined"
-              title="Outlined Card"
-              description="Card con borde sutil y fondo transparente, perfecto para destacar contenido importante."
-            />
-
-            <Card
-              variant="danger"
-              icon={Flame}
-              title="Danger Card"
-              description="Card con tono rojo para alertas, advertencias o contenido crítico que requiere atención."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Product Cards Section */}
-      <section className="py-16 px-4 bg-[#050505]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-4xl font-bold text-gray-100 mb-4">
-              Product Cards Góticas
-            </h3>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Cards de producto con imágenes que "flotan" fuera del contenedor, variantes claras y oscuras
-            </p>
-          </div>
-
-          {/* Productos con variante oscura (default) */}
-          <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Variante Oscura</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <ProductCard
-              image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"
-              imageAlt="Audífonos Premium Inalámbricos"
-              title="Audífonos Premium"
-              description="Sonido envolvente de alta fidelidad con cancelación de ruido activa"
-              price={299.99}
-              originalPrice={399.99}
-              rating={4.5}
-              reviews={128}
-              variant="default"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-              onWishlist={() => alert('Agregado a favoritos!')}
-              onQuickView={() => alert('Vista rápida!')}
-            />
-
-            <ProductCard
-              image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
-              imageAlt="Reloj Inteligente Premium"
-              title="Smartwatch Elite"
-              description="Seguimiento avanzado de salud y fitness con pantalla AMOLED"
-              price={449.99}
-              originalPrice={599.99}
-              rating={5}
-              reviews={256}
-              badge="NUEVO"
-              variant="premium"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-              onWishlist={() => alert('Agregado a favoritos!')}
-              onQuickView={() => alert('Vista rápida!')}
-            />
-
-            <ProductCard
-              image="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80"
-              imageAlt="Gafas de Sol Clásicas"
-              title="Gafas de Sol Premium"
-              description="Diseño atemporal con protección UV400 y lentes polarizadas"
-              price={179.99}
-              rating={4.8}
-              reviews={89}
-              variant="glass"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-              onWishlist={() => alert('Agregado a favoritos!')}
-            />
-          </div>
-
-          {/* Productos con variante clara */}
-          <h4 className="text-2xl font-bold text-gray-300 mb-6 text-center">Variante Clara</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ProductCard
-              image="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80"
-              imageAlt="Zapatillas Deportivas"
-              title="Zapatillas Running Pro"
-              description="Máximo confort y rendimiento para tus entrenamientos más intensos"
-              price={159.99}
-              originalPrice={199.99}
-              rating={4.3}
-              reviews={45}
-              variant="light"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-            />
-
-            <ProductCard
-              image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
-              imageAlt="Zapatillas Urbanas"
-              title="Urban Sneakers"
-              description="Estilo y comodidad para el día a día en la ciudad"
-              price={129.99}
-              rating={4.7}
-              reviews={201}
-              discount={35}
-              variant="light"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-            />
-
-            <ProductCard
-              image="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800&q=80"
-              imageAlt="Cámara Profesional"
-              title="Cámara DSLR Pro"
-              description="Captura momentos inolvidables con calidad profesional"
-              price={899.99}
-              rating={4.9}
-              reviews={512}
-              badge="TOP"
-              variant="light"
-              imagePosition="float"
-              imageSize="large"
-              onAddToCart={() => alert('Agregado al carrito!')}
-              onWishlist={() => alert('Agregado a favoritos!')}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 px-4 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: "100+", label: "Componentes", badge: "primary" },
-              { number: "10K+", label: "Usuarios", badge: "success" },
-              { number: "99%", label: "Satisfacción", badge: "warning" },
-              { number: "24/7", label: "Soporte", badge: "default" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center group cursor-pointer">
-                <div className="text-4xl sm:text-5xl font-bold text-gray-300 mb-2 group-hover:scale-110 transition-transform duration-300">
-                  {stat.number}
-                </div>
-                <div className="text-gray-500 text-sm uppercase tracking-wide mb-2">
-                  {stat.label}
-                </div>
-                <Badge variant={stat.badge} size="sm">{stat.label}</Badge>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <Card
+                key={index}
+                variant="glass"
+                icon={service.icon}
+                title={service.title}
+                description={service.description}
+                hoverable
+                footer={
+                  <div className="flex items-center justify-between">
+                    <Badge variant="primary" size="sm">{service.price}</Badge>
+                    <Button variant="primary" size="sm">
+                      Reservar
+                    </Button>
+                  </div>
+                }
+              />
             ))}
           </div>
         </div>
       </section>
 
+      {/* Products Section */}
+      <section 
+        id="productos" 
+        className="relative min-h-screen flex items-center py-20 overflow-hidden"
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&q=80')",
+            filter: 'brightness(0.25)',
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <Badge variant="success" icon={ShoppingBag} className="mb-4">
+              Tienda Online
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+              Productos Exclusivos
+            </h2>
+            <p className="text-[#9ca3af] text-lg max-w-2xl mx-auto">
+              Ropa, carteras y accesorios seleccionados especialmente para ti
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product, index) => (
+              <ProductCard
+                key={index}
+                {...product}
+                imagePosition="float"
+                imageSize="large"
+                hoverable
+                onAddToCart={() => console.log('Agregar:', product.title)}
+                onWishlist={() => console.log('Favorito:', product.title)}
+                onQuickView={() => console.log('Vista rápida:', product.title)}
+              />
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button variant="outline" size="lg" icon={ArrowRight} iconPosition="right">
+              Ver Todos los Productos
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Carousel Section */}
+      <section className="relative py-20 overflow-hidden bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Badge variant="primary" icon={Star} glow className="mb-4">
+              Destacados
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+              Lo Más Popular
+            </h2>
+          </div>
+          
+          <Carousel items={carouselItems} />
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section 
+        id="nosotros" 
+        className="relative min-h-screen flex items-center py-20 overflow-hidden"
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80')",
+            filter: 'brightness(0.3)',
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <Badge variant="warning" icon={Crown} className="mb-4">
+              Sobre Nosotros
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-6 text-shadow-metal">
+              Tu Destino de Belleza y Estilo
+            </h2>
+            <p className="text-[#9ca3af] text-lg max-w-3xl mx-auto leading-relaxed mb-12">
+              En Obsidian, fusionamos la elegancia gótica con la belleza moderna. Ofrecemos servicios profesionales de manicure y una selección exclusiva de productos de moda para que expreses tu estilo único.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+            <Card variant="glass" hoverable className="text-center">
+              <div className="py-6">
+                <Users className="w-12 h-12 text-[#6b21a8] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[#f3f4f6] mb-2">5K+</div>
+                <Badge variant="default" size="sm">Clientes Felices</Badge>
+              </div>
+            </Card>
+
+            <Card variant="glass" hoverable className="text-center">
+              <div className="py-6">
+                <Award className="w-12 h-12 text-[#6b21a8] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[#f3f4f6] mb-2">98%</div>
+                <Badge variant="success" size="sm">Satisfacción</Badge>
+              </div>
+            </Card>
+
+            <Card variant="glass" hoverable className="text-center">
+              <div className="py-6">
+                <Star className="w-12 h-12 text-[#6b21a8] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[#f3f4f6] mb-2">4.9</div>
+                <Badge variant="warning" size="sm">Rating</Badge>
+              </div>
+            </Card>
+
+            <Card variant="glass" hoverable className="text-center">
+              <div className="py-6">
+                <TrendingUp className="w-12 h-12 text-[#6b21a8] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[#f3f4f6] mb-2">3+</div>
+                <Badge variant="primary" size="sm">Años</Badge>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Card
-            variant="glass"
-            className="text-center"
-          >
-            <div className="p-12">
+      <section 
+        id="contacto" 
+        className="relative min-h-screen flex items-center py-20 overflow-hidden"
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1920&q=80')",
+            filter: 'brightness(0.25)',
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/85 to-[#0a0a0a]"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <Card variant="glass" className="text-center">
+            <div className="py-16 px-8">
+              <Sparkles className="w-16 h-16 text-[#6b21a8] mx-auto mb-6" />
+              
               <Badge variant="primary" size="lg" glow className="mb-6">
                 ¡Únete Ahora!
               </Badge>
-              <h3 className="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">
-                ¿Listo para comenzar?
-              </h3>
-              <p className="text-gray-400 mb-8 text-lg">
-                Únete a la oscuridad y descubre un nuevo nivel de diseño web con componentes góticos únicos
+
+              <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-6 text-shadow-metal">
+                ¿Lista para Brillar?
+              </h2>
+
+              <p className="text-xl text-[#9ca3af] mb-12 max-w-2xl mx-auto">
+                Reserva tu cita ahora y descubre la experiencia Obsidian. Belleza, elegancia y estilo en un solo lugar.
               </p>
-              <div className="flex gap-4 justify-center flex-wrap">
-                <Button variant="primary" size="lg" icon={Crown}>
-                  Comenzar Gratis
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button variant="primary" size="lg" icon={Calendar}>
+                  Reservar Ahora
                 </Button>
-                <Button variant="outline" size="lg" icon={Shield}>
-                  Ver Precios
+                <Button variant="outline" size="lg" icon={ShoppingBag}>
+                  Ver Catálogo
                 </Button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="flex items-start gap-3 text-left">
+                  <CheckCircle className="w-6 h-6 text-[#6b21a8] flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="text-[#e5e7eb] font-semibold mb-1">Profesionales Certificadas</h4>
+                    <p className="text-[#9ca3af] text-sm">Equipo experto y capacitado</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 text-left">
+                  <CheckCircle className="w-6 h-6 text-[#6b21a8] flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="text-[#e5e7eb] font-semibold mb-1">Productos Premium</h4>
+                    <p className="text-[#9ca3af] text-sm">Solo las mejores marcas</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 text-left">
+                  <CheckCircle className="w-6 h-6 text-[#6b21a8] flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="text-[#e5e7eb] font-semibold mb-1">Atención Personalizada</h4>
+                    <p className="text-[#9ca3af] text-sm">Cuidamos cada detalle</p>
+                  </div>
+                </div>
               </div>
             </div>
           </Card>
         </div>
       </section>
-
-      <section>
-        <Carousel items={carouselItems} />
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-[#1a1a1a] bg-[#0a0a0a] py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Skull className="w-6 h-6 text-gray-500" />
-              <span className="text-gray-400 text-sm">
-                © 2024 Obsidian. Todos los derechos reservados.
-              </span>
-            </div>
-
-            <div className="flex gap-4">
-              <Button variant="ghost" size="sm" icon={Twitter}>Twitter</Button>
-              <Button variant="ghost" size="sm" icon={Github}>GitHub</Button>
-              <Button variant="ghost" size="sm" icon={Mail}>Email</Button>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
