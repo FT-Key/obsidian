@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Obsidian - Gothic Dark App",
-  description: "Una experiencia visual oscura y elegante con diseño gótico moderno",
+  title: "Obsidian",
+  description: "",
 };
 
 export default function RootLayout({ children }) {
