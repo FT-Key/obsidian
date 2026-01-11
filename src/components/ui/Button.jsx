@@ -25,7 +25,7 @@ const Button = ({
     overflow-hidden
     disabled:opacity-40 disabled:cursor-not-allowed
     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a0a0a]
-    group
+    group/button
   `;
 
   const variants = {
@@ -152,8 +152,8 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      {/* Ornamento gótico de fondo con imagen - se revela desde el centro */}
-      <span className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      {/* Ornamento gótico de fondo con imagen - AISLADO con group/button */}
+      <span className="absolute inset-0 overflow-hidden opacity-0 group-hover/button:opacity-100 transition-opacity duration-300">
         <span
           className="absolute inset-0 bg-center bg-no-repeat bg-contain"
           style={{
@@ -170,14 +170,14 @@ const Button = ({
           }}
         />
         <span 
-          className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a] opacity-100 group-hover:opacity-0 transition-opacity duration-500 ease-out"
+          className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a] opacity-100 group-hover/button:opacity-0 transition-opacity duration-500 ease-out"
           style={{ transitionDelay: '100ms' }}
         />
       </span>
 
-      {/* Gradiente radial sutil de respaldo */}
+      {/* Gradiente radial sutil de respaldo - AISLADO con group/button */}
       <span 
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out scale-x-0 group-hover:scale-x-100 origin-center"
+        className="absolute inset-0 opacity-0 group-hover/button:opacity-100 transition-all duration-500 ease-out scale-x-0 group-hover/button:scale-x-100 origin-center"
         style={{
           background: variant === 'primary' ? 'radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 70%)' :
                      variant === 'secondary' ? 'radial-gradient(ellipse at center, rgba(107,33,168,0.15) 0%, transparent 70%)' :
@@ -190,26 +190,26 @@ const Button = ({
         }}
       />
 
-      {/* Brillo sutil en el centro inferior */}
-      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-[1px]"></span>
+      {/* Brillo sutil en el centro inferior - AISLADO con group/button */}
+      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover/button:opacity-40 transition-opacity duration-500 blur-[1px]"></span>
 
-      {/* Cortes en las esquinas con terminaciones en punta gótica */}
-      <span className="absolute top-0 left-0 w-2.5 h-2.5 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+      {/* Cortes en las esquinas con terminaciones en punta gótica - AISLADO con group/button */}
+      <span className="absolute top-0 left-0 w-2.5 h-2.5 opacity-20 group-hover/button:opacity-40 transition-opacity duration-300">
         <svg viewBox="0 0 10 10" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M0 2 L0 0 L2 0" />
         </svg>
       </span>
-      <span className="absolute top-0 right-0 w-2.5 h-2.5 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+      <span className="absolute top-0 right-0 w-2.5 h-2.5 opacity-20 group-hover/button:opacity-40 transition-opacity duration-300">
         <svg viewBox="0 0 10 10" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M10 2 L10 0 L8 0" />
         </svg>
       </span>
-      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 opacity-20 group-hover/button:opacity-40 transition-opacity duration-300">
         <svg viewBox="0 0 10 10" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M0 8 L0 10 L2 10" />
         </svg>
       </span>
-      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 opacity-20 group-hover/button:opacity-40 transition-opacity duration-300">
         <svg viewBox="0 0 10 10" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M10 8 L10 10 L8 10" />
         </svg>
@@ -235,7 +235,7 @@ const Button = ({
       )}
       
       {!loading && Icon && iconPosition === 'left' && (
-        <Icon className="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10" />
+        <Icon className="w-5 h-5 flex-shrink-0 group-hover/button:scale-110 transition-transform duration-300 relative z-10" />
       )}
       
       <span className="relative z-10 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
@@ -243,7 +243,7 @@ const Button = ({
       </span>
       
       {!loading && Icon && iconPosition === 'right' && (
-        <Icon className="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10" />
+        <Icon className="w-5 h-5 flex-shrink-0 group-hover/button:scale-110 transition-transform duration-300 relative z-10" />
       )}
     </button>
   );

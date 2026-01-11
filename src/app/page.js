@@ -211,7 +211,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product, index) => (
               <ProductCard
                 key={index}
@@ -235,20 +235,29 @@ export default function HomePage() {
       </section>
 
       {/* Carousel Section */}
-      <section className="relative py-20 overflow-hidden bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge variant="primary" icon={Star} glow className="mb-4">
-              Destacados
-            </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
-              Lo Más Popular
-            </h2>
-          </div>
-          
-          <Carousel items={carouselItems} />
-        </div>
-      </section>
+    <section className="relative py-20 overflow-hidden">
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-fixed"
+    style={{
+      backgroundImage: "url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=80')",
+      filter: 'brightness(0.25)',
+    }}
+  ></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+
+  <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <Badge variant="primary" icon={Star} glow className="mb-4">
+        Destacados
+      </Badge>
+      <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+        Lo Más Popular
+      </h2>
+    </div>
+    
+    <Carousel items={carouselItems} />
+  </div>
+</section>
 
       {/* Stats Section */}
       <section 
