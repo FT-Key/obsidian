@@ -4,13 +4,8 @@ import React from 'react';
 import { clsx } from 'clsx';
 
 /**
- * Gothic Dark Badge Component - Versión Ajustada Final
- * Primary: Blanco grisáceo
- * Secondary: Grisáceo con morado
- * Danger: Rojo vino
- * Success: Verde
- * Warning: Naranja
- * Hover: Sombras suavizadas (no neon intenso)
+ * Gothic Dark Badge Component - Sin Metalizado
+ * Diseño gótico oscuro con colores planos y sutiles
  */
 const Badge = ({
   children,
@@ -28,97 +23,82 @@ const Badge = ({
   const baseStyles = `
     inline-flex items-center gap-1.5 font-semibold
     transition-all duration-300 relative
-    clip-path-badge
+    rounded-md
   `;
 
   const variants = {
-    // Badge por defecto - Gris metálico neutral
+    // Badge por defecto - Gris oscuro simple
     default: `
-      bg-gradient-to-br from-[#2d2d2d] via-[#242424] to-[#1a1a1a]
-      text-gray-300 border border-[#3a3a3a]
-      shadow-[0_2px_6px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)]
-      hover:border-[#4a4a4a] hover:text-gray-100
-      hover:shadow-[0_2px_8px_rgba(0,0,0,0.7),0_0_8px_rgba(255,255,255,0.08)]
+      bg-[#1f1f1f]
+      text-gray-300 border border-[#2d2d2d]
+      hover:bg-[#252525] hover:border-[#353535]
+      hover:text-gray-100
+      ${glow ? 'shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'shadow-sm'}
     `,
     
-    // Badge primario - BLANCO GRISÁCEO con bordes oscuros
+    // Badge primario - Blanco/gris claro
     primary: `
-      bg-gradient-to-br from-[#e5e7eb] via-[#d1d5db] to-[#9ca3af]
-      text-gray-900 border border-[#6b7280]
-      shadow-[0_2px_6px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.4)]
-      hover:shadow-[0_2px_8px_rgba(0,0,0,0.6),0_0_8px_rgba(0,0,0,0.15)]
-      hover:border-[#4b5563] hover:from-[#f3f4f6]
-      ${glow ? 'shadow-[0_0_12px_rgba(0,0,0,0.3)]' : ''}
+      bg-[#e5e7eb]
+      text-gray-900 border border-[#d1d5db]
+      hover:bg-[#f3f4f6] hover:border-[#c2c6cc]
+      ${glow ? 'shadow-[0_0_20px_rgba(229,231,235,0.4)]' : 'shadow-sm'}
     `,
     
-    // Badge secundario - GRISÁCEO CLARO con decoraciones MORADAS
+    // Badge secundario - Morado amatista (color principal)
     secondary: `
-      bg-gradient-to-br from-[#d1d5db] via-[#9ca3af] to-[#6b7280]
-      text-gray-900 border border-[#4b5563]
-      shadow-[0_2px_6px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.3),0_0_0_1px_rgba(107,33,168,0.25)]
-      hover:shadow-[0_2px_8px_rgba(107,33,168,0.3),0_0_10px_rgba(107,33,168,0.2)]
-      hover:border-[#6b21a8]/40 hover:from-[#e5e7eb]
-      ${glow ? 'shadow-[0_0_12px_rgba(107,33,168,0.3)]' : ''}
+      bg-[#6b21a8]
+      text-white border border-[#4c1d95]
+      hover:bg-[#7c3aed] hover:border-[#6b21a8]
+      ${glow ? 'shadow-[0_0_20px_rgba(107,33,168,0.5)]' : 'shadow-sm'}
     `,
     
-    // Badge de éxito - Base oscura con VERDE
+    // Badge de éxito - Verde esmeralda
     success: `
-      bg-gradient-to-br from-[#065f46] via-[#047857] to-[#064e3b]
-      text-emerald-100 border border-[#059669]
-      shadow-[0_2px_6px_rgba(16,185,129,0.4),inset_0_1px_0_rgba(110,231,183,0.12),0_0_0_1px_rgba(16,185,129,0.25)]
-      hover:shadow-[0_2px_8px_rgba(16,185,129,0.5),0_0_10px_rgba(16,185,129,0.25)]
-      hover:border-emerald-500/60 hover:text-white
-      ${glow ? 'shadow-[0_0_12px_rgba(16,185,129,0.35)]' : ''}
+      bg-[#059669]
+      text-white border border-[#047857]
+      hover:bg-[#10b981] hover:border-[#059669]
+      ${glow ? 'shadow-[0_0_20px_rgba(16,185,129,0.4)]' : 'shadow-sm'}
     `,
     
-    // Badge de peligro - ROJO VINO
+    // Badge de peligro - Rojo vino
     danger: `
-      bg-gradient-to-br from-[#7c2d12] via-[#991b1b] to-[#7f1d1d]
-      text-red-100 border border-[#991b1b]
-      shadow-[0_2px_6px_rgba(153,27,27,0.5),inset_0_1px_0_rgba(255,100,100,0.12),0_0_0_1px_rgba(220,38,38,0.3)]
-      hover:shadow-[0_2px_8px_rgba(220,38,38,0.6),0_0_10px_rgba(220,38,38,0.25)]
-      hover:border-red-700/60 hover:text-white
-      ${glow ? 'shadow-[0_0_12px_rgba(220,38,38,0.4)]' : ''}
+      bg-[#991b1b]
+      text-white border border-[#7f1d1d]
+      hover:bg-[#b91c1c] hover:border-[#991b1b]
+      ${glow ? 'shadow-[0_0_20px_rgba(220,38,38,0.4)]' : 'shadow-sm'}
     `,
     
-    // Badge de advertencia - NARANJA/ÁMBAR
+    // Badge de advertencia - Naranja
     warning: `
-      bg-gradient-to-br from-[#c2410c] via-[#ea580c] to-[#9a3412]
-      text-orange-100 border border-[#ea580c]
-      shadow-[0_2px_6px_rgba(234,88,12,0.4),inset_0_1px_0_rgba(253,186,116,0.12),0_0_0_1px_rgba(249,115,22,0.25)]
-      hover:shadow-[0_2px_8px_rgba(249,115,22,0.5),0_0_10px_rgba(249,115,22,0.25)]
-      hover:border-orange-600/60 hover:text-white
-      ${glow ? 'shadow-[0_0_12px_rgba(249,115,22,0.35)]' : ''}
+      bg-[#ea580c]
+      text-white border border-[#c2410c]
+      hover:bg-[#f97316] hover:border-[#ea580c]
+      ${glow ? 'shadow-[0_0_20px_rgba(249,115,22,0.4)]' : 'shadow-sm'}
     `,
     
-    // Badge info - Azul cyan con base oscura
+    // Badge info - Cyan
     info: `
-      bg-gradient-to-br from-[#0e7490] via-[#0891b2] to-[#155e75]
-      text-cyan-100 border border-[#06b6d4]
-      shadow-[0_2px_6px_rgba(6,182,212,0.4),inset_0_1px_0_rgba(165,243,252,0.12),0_0_0_1px_rgba(6,182,212,0.25)]
-      hover:shadow-[0_2px_8px_rgba(6,182,212,0.5),0_0_10px_rgba(6,182,212,0.25)]
-      hover:border-cyan-500/60 hover:text-white
-      ${glow ? 'shadow-[0_0_12px_rgba(6,182,212,0.35)]' : ''}
+      bg-[#0891b2]
+      text-white border border-[#0e7490]
+      hover:bg-[#06b6d4] hover:border-[#0891b2]
+      ${glow ? 'shadow-[0_0_20px_rgba(6,182,212,0.4)]' : 'shadow-sm'}
     `,
     
-    // Badge fantasma - Transparente con toque púrpura
+    // Badge fantasma - Transparente
     ghost: `
       bg-transparent text-gray-400
       border border-[#2d2d2d]
-      shadow-[0_0_6px_rgba(0,0,0,0.4),inset_0_0_6px_rgba(107,33,168,0.08)]
       hover:bg-[#1a1a1a]/40 hover:border-[#3a3a3a]
       hover:text-gray-200
-      hover:shadow-[0_0_8px_rgba(107,33,168,0.15)]
-      ${glow ? 'shadow-[0_0_10px_rgba(107,33,168,0.25)]' : ''}
+      ${glow ? 'shadow-[0_0_15px_rgba(107,33,168,0.2)]' : ''}
     `,
     
-    // Badge outline - Solo bordes neutrales
+    // Badge outline - Solo bordes
     outline: `
       bg-transparent text-gray-300
       border border-[#3a3a3a]
-      shadow-[0_0_4px_rgba(0,0,0,0.3)]
-      hover:bg-[#1a1a1a]/50 hover:border-[#4a4a4a] hover:text-white
-      hover:shadow-[0_0_6px_rgba(255,255,255,0.08)]
+      hover:bg-[#1a1a1a]/50 hover:border-[#4a4a4a] 
+      hover:text-white
     `
   };
 
@@ -128,30 +108,17 @@ const Badge = ({
     lg: 'px-3 py-1.5 text-base'
   };
 
-  // Colores de decoración según variante - SUTILES
+  // Colores de decoración según variante
   const decorationColors = {
-    default: 'bg-white/15 shadow-[0_0_3px_rgba(255,255,255,0.3)]',
-    primary: 'bg-gray-400/40 shadow-[0_0_4px_rgba(156,163,175,0.5)]',
-    secondary: 'bg-purple-500/30 shadow-[0_0_5px_rgba(107,33,168,0.5)]',
-    success: 'bg-emerald-400/35 shadow-[0_0_5px_rgba(16,185,129,0.5)]',
-    danger: 'bg-red-400/35 shadow-[0_0_5px_rgba(220,38,38,0.5)]',
-    warning: 'bg-orange-400/35 shadow-[0_0_5px_rgba(249,115,22,0.5)]',
-    info: 'bg-cyan-400/35 shadow-[0_0_5px_rgba(6,182,212,0.5)]',
-    ghost: 'bg-purple-500/20 shadow-[0_0_4px_rgba(107,33,168,0.4)]',
-    outline: 'bg-white/15 shadow-[0_0_3px_rgba(255,255,255,0.3)]'
-  };
-
-  // Color de la línea superior según variante
-  const topLineColors = {
-    default: 'via-white/15',
-    primary: 'via-gray-400/25',
-    secondary: 'via-purple-400/25',
-    success: 'via-emerald-400/25',
-    danger: 'via-red-400/25',
-    warning: 'via-orange-400/25',
-    info: 'via-cyan-400/25',
-    ghost: 'via-purple-400/20',
-    outline: 'via-white/15'
+    default: 'bg-white/20',
+    primary: 'bg-gray-500/40',
+    secondary: 'bg-purple-500/40',
+    success: 'bg-emerald-400/50',
+    danger: 'bg-red-400/50',
+    warning: 'bg-orange-400/50',
+    info: 'bg-cyan-400/50',
+    ghost: 'bg-purple-500/30',
+    outline: 'bg-white/20'
   };
 
   const badgeClasses = clsx(
@@ -163,14 +130,7 @@ const Badge = ({
 
   return (
     <span className={badgeClasses} {...props}>
-      {/* Decoración superior con color según variante - MUY SUTIL */}
-      <span className={clsx(
-        "absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[1px]",
-        "bg-gradient-to-r from-transparent to-transparent",
-        topLineColors[variant]
-      )}></span>
-      
-      {/* Punto decorativo superior - Color según variante SUTIL */}
+      {/* Punto decorativo superior */}
       <span className={clsx(
         "absolute -top-[2px] left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full",
         decorationColors[variant]
@@ -210,9 +170,6 @@ const Badge = ({
           </svg>
         </button>
       )}
-
-      {/* Decoración inferior sutil - neutral */}
-      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></span>
     </span>
   );
 };

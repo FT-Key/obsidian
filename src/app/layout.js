@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ToastProvider from "@/components/ToastProvider";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,15 +15,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Obsidian",
-  description: "",
+  title: "Obsidian - Beauty & Style",
+  description: "Tu destino de belleza y estilo. Servicios profesionales de manicure y productos exclusivos de moda.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <Navbar />
+        <main>
+          {children}
+        </main>
+        <Footer />
         <ToastProvider />
       </body>
     </html>
