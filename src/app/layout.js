@@ -17,6 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Obsidian - Beauty & Style",
   description: "Tu destino de belleza y estilo. Servicios profesionales de manicure y productos exclusivos de moda.",
+  icons: {
+    icon: '/logo.png',
+  },
+  keywords: ['servicios de uñas', 'esmaltado', 'nail art', 'venta de productos', 'carteras', 'ropa', 'accesorios'],
 };
 
 export default function RootLayout({ children }) {
