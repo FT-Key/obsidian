@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // ============== CONSTANTES ==============
@@ -50,14 +50,80 @@ const CornerDecorations = () => {
   );
 };
 
-const InfoCard = ({ item, index, isTransitioning }) => (
-  <div className={`
-    absolute top-1/2 -translate-y-1/2 
-    w-[90%] sm:w-80 md:w-96
-    -left-2 sm:-left-8 md:-left-20 lg:-left-32 xl:-left-60
-    transition-all duration-700 z-50 
-    ${isTransitioning ? 'opacity-0 -translate-x-12 scale-95' : 'opacity-100 translate-x-0 scale-100'}
-  `}>
+const InfoIndicator = ({ isExpanded, buttonRef }) => (
+  <div ref={buttonRef} className="absolute top-4 left-4 z-50 pointer-events-none">
+    <div className="relative w-10 h-10 md:w-12 md:h-12">
+      {/* Círculo de fondo con pulso cuando está minimizado */}
+      <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-gothic-amethyst to-gothic-plum border-2 border-gothic-obsidian shadow-[0_6px_20px_rgba(107,33,168,0.8)] transition-all duration-300 ${!isExpanded ? 'animate-pulse' : ''}`}></div>
+      
+      {/* Icono de exclamación / chevron */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <svg 
+          className={`w-5 h-5 md:w-6 md:h-6 text-gothic-pearl transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          {isExpanded ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+          ) : (
+            <>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8v4m0 4h.01" />
+            </>
+          )}
+        </svg>
+      </div>
+    </div>
+  </div>
+);
+
+const InfoCard = ({ item, index, isTransitioning, isExpanded, onToggle, buttonRef, imageRef }) => {
+  const cardRef = React.useRef(null);
+  const [transformOrigin, setTransformOrigin] = React.useState('center');
+  
+  React.useEffect(() => {
+    if (!isExpanded && buttonRef.current && cardRef.current && imageRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const cardRect = cardRef.current.getBoundingClientRect();
+      const imageRect = imageRef.current.getBoundingClientRect();
+      
+      // Calcular el centro del botón
+      const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+      const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+      
+      // Calcular la posición relativa del botón respecto a la card
+      const relativeX = buttonCenterX - cardRect.left;
+      const relativeY = buttonCenterY - cardRect.top;
+      
+      // Convertir a porcentajes
+      const originX = (relativeX / cardRect.width) * 100;
+      const originY = (relativeY / cardRect.height) * 100;
+      
+      setTransformOrigin(`${originX}% ${originY}%`);
+    } else if (isExpanded) {
+      setTransformOrigin('center');
+    }
+  }, [isExpanded, buttonRef, imageRef]);
+  
+  return (
+    <div 
+      ref={cardRef}
+      onClick={onToggle}
+      className={`
+        absolute top-1/2 -translate-y-1/2 
+        w-[90%] sm:w-80 md:w-96
+        -left-2 sm:-left-8 md:-left-20 lg:-left-32 xl:-left-60
+        z-50
+        ${isExpanded 
+          ? 'transition-all duration-700 ease-out cursor-pointer opacity-100 translate-x-0 scale-100' 
+          : 'transition-all duration-500 ease-in scale-0 opacity-0 pointer-events-none'
+        }
+        ${isTransitioning && isExpanded ? 'opacity-0 -translate-x-12 scale-95' : ''}
+      `}
+      style={{
+        transformOrigin: transformOrigin
+      }}
+    >
     <div className="absolute z-2 -top-4 right-8 w-12 h-12 bg-gradient-to-br from-gothic-amethyst to-gothic-plum rounded-full flex items-center justify-center text-gothic-pearl font-bold text-xl shadow-[0_6px_20px_rgba(107,33,168,0.8)] border-2 border-gothic-obsidian">
       {index + 1}
     </div>
@@ -127,7 +193,7 @@ const InfoCard = ({ item, index, isTransitioning }) => (
       <div className="absolute bottom-2 right-4 w-1.5 h-1.5 bg-gothic-pewter rounded-full opacity-40"></div>
     </div>
   </div>
-);
+);};
 
 const NavigationButton = ({ direction, onClick, disabled }) => {
   const Icon = direction === 'prev' ? ChevronLeft : ChevronRight;
@@ -214,6 +280,27 @@ const Carousel = ({ items = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [direction, setDirection] = useState('next');
+  
+  // Estado para controlar expansión de InfoCard
+  const [isInfoExpanded, setIsInfoExpanded] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
+  
+  // Referencias para calcular posiciones
+  const buttonRef = React.useRef(null);
+  const imageRef = React.useRef(null);
+
+  // Detectar tamaño de pantalla solo después del montaje en el cliente
+  useEffect(() => {
+    if (!hasInitialized) {
+      const isLarge = window.innerWidth >= 1024;
+      setIsInfoExpanded(isLarge);
+      setHasInitialized(true);
+    }
+  }, [hasInitialized]);
+
+  const toggleInfoCard = useCallback(() => {
+    setIsInfoExpanded(prev => !prev);
+  }, []);
 
   if (!items || items.length === 0) {
     return (
@@ -263,8 +350,19 @@ const Carousel = ({ items = [] }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* ZONA IZQUIERDA */}
           <div className="lg:col-span-8 relative z-10 w-full">
-            <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border-4 border-gothic-steel shadow-[0_0_50px_rgba(0,0,0,0.9),inset_0_0_80px_rgba(0,0,0,0.5)]">
+            <div 
+              ref={imageRef}
+              onClick={toggleInfoCard}
+              className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border-4 border-gothic-steel shadow-[0_0_50px_rgba(0,0,0,0.9),inset_0_0_80px_rgba(0,0,0,0.5)] cursor-pointer group"
+            >
               <CornerDecorations />
+              
+              {/* Indicador visual (no clickeable) */}
+              <InfoIndicator isExpanded={isInfoExpanded} buttonRef={buttonRef} />
+              
+              {/* Overlay sutil para indicar que es clickeable */}
+              <div className="absolute inset-0 bg-gothic-amethyst/0 group-hover:bg-gothic-amethyst/5 transition-colors duration-300 pointer-events-none"></div>
+              
               <div className={`absolute inset-0 transition-all duration-700 ${isTransitioning ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'}`}>
                 <img
                   src={currentItem.image}
@@ -275,7 +373,15 @@ const Carousel = ({ items = [] }) => {
               </div>
             </div>
 
-            <InfoCard item={currentItem} index={currentIndex} isTransitioning={isTransitioning} />
+            <InfoCard 
+              item={currentItem} 
+              index={currentIndex} 
+              isTransitioning={isTransitioning}
+              isExpanded={isInfoExpanded}
+              onToggle={toggleInfoCard}
+              buttonRef={buttonRef}
+              imageRef={imageRef}
+            />
 
             <div className="relative mt-6 md:mt-8 flex items-center justify-center gap-3 md:gap-6 z-30">
               <NavigationButton direction="prev" onClick={prevSlide} disabled={isTransitioning} />

@@ -3,6 +3,7 @@
 import React from 'react';
 import { clsx } from 'clsx';
 import { Sparkles, Mail, Phone, MapPin, Instagram, Facebook, Twitter, Heart, Calendar, ShoppingBag } from 'lucide-react';
+import Image from 'next/image';
 
 /**
  * Footer Component - Gothic Dark Medieval con Clip-Path Original
@@ -47,16 +48,16 @@ const Footer = () => {
 
       <div className="relative pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Main Content */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
-            
+
             {/* Brand & Info - 4 cols */}
             <div className="lg:col-span-4">
               {/* Logo */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-12 h-12 clip-path-gothic-md bg-gradient-to-br from-gothic-chrome via-gothic-silver to-gothic-ash border border-gothic-pewter shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                  <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-gothic-obsidian" />
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 clip-path-gothic-md bg-gradient-to-br from-gothic-chrome via-gothic-silver to-gothic-ash border border-gothic-pewter shadow-[0_2px_8px_rgba(0,0,0,0.6)] group-hover:shadow-[0_2px_12px_rgba(107,33,168,0.3)] transition-all duration-300">
+                  <Image src="/logo.png" alt="Logo" className="navbar-logo" width={60} height={60} />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-gothic-pearl font-bold text-2xl tracking-wider text-shadow-metal">
@@ -151,10 +152,10 @@ const Footer = () => {
                 <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gothic-pewter opacity-60 z-10"></div>
                 <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gothic-pewter opacity-60 z-10"></div>
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gothic-pewter opacity-60 z-10"></div>
-                
+
                 {/* Google Maps Iframe */}
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56550.37634479701!2d-65.26485385!3d-26.8241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225c0e8d0271d7%3A0x7946062ac490db16!2sSan%20Miguel%20de%20Tucum%C3%A1n%2C%20Tucum%C3%A1n!5e0!3m2!1ses!2sar!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d890.2285395808054!2d-65.14930727145226!3d-26.81086179853819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225f001532fc0f%3A0x3dfa068fd3ec01f9!2sZabina%20Nails!5e0!3m2!1ses-419!2sus!4v1768697504833!5m2!1ses-419!2sus"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -178,7 +179,7 @@ const Footer = () => {
 
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            
+
             {/* Copyright */}
             <div className="flex items-center gap-2 text-gothic-smoke text-sm">
               <span>© {currentYear} Obsidian Beauty & Style</span>

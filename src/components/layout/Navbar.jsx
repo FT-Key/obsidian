@@ -83,7 +83,7 @@ const Navbar = () => {
             <a href="#hero" className="flex items-center gap-2 sm:gap-3 group">
               {/* Icono decorativo gótico */}
               <div className="relative w-8 h-8 sm:w-10 sm:h-10 clip-path-gothic-md bg-gradient-to-br from-gothic-chrome via-gothic-silver to-gothic-ash border border-gothic-pewter shadow-[0_2px_8px_rgba(0,0,0,0.6)] group-hover:shadow-[0_2px_12px_rgba(107,33,168,0.3)] transition-all duration-300">
-                <Image src="/logo.png" alt="Logo" className="navbar-logo" width={40} height={40} />
+                <Image src="/logo.png" alt="Logo" className="navbar-logo" width={60} height={60} />
               </div>
               
               {/* Nombre del negocio */}
