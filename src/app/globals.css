@@ -5,6 +5,39 @@
   --foreground: #e2e8f0;
 }
 
+/* ============================================
+   MODO CLARO - Tema Gótico Luminoso
+   ============================================ */
+:root[data-theme="light"] {
+  --background: #f5f5f5;
+  --foreground: #1a1a1a;
+  
+  /* BLANCOS Y LUCES - Base principal */
+  --color-gothic-void: #ffffff;
+  --color-gothic-abyss: #f5f5f5;
+  --color-gothic-shadow: #ebebeb;
+  --color-gothic-obsidian: #e0e0e0;
+  
+  /* GRISES CLAROS - Estructura y bordes */
+  --color-gothic-iron: #d4d4d4;
+  --color-gothic-steel: #c7c7c7;
+  --color-gothic-gunmetal: #b8b8b8;
+  --color-gothic-pewter: #a3a3a3;
+  
+  /* GRISES OSCUROS - Textos y acentos */
+  --color-gothic-ash: #737373;
+  --color-gothic-smoke: #525252;
+  --color-gothic-silver: #262626;
+  --color-gothic-chrome: #171717;
+  --color-gothic-pearl: #0a0a0a;
+  
+  /* ACENTOS GÓTICOS LUMINOSOS */
+  --color-gothic-amethyst: #9333ea;
+  --color-gothic-wine: #dc2626;
+  --color-gothic-crimson: #ef4444;
+  --color-gothic-plum: #7c3aed;
+}
+
 @theme inline {
   /* ============================================
      PALETA GÓTICA DARK REFINADA
@@ -50,6 +83,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
@@ -113,14 +147,26 @@ body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+:root[data-theme="light"] .text-shadow-metal {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 /* Efecto de brillo plateado muy sutil */
 .glow-silver {
   box-shadow: 0 0 15px rgba(209, 213, 219, 0.1);
 }
 
+:root[data-theme="light"] .glow-silver {
+  box-shadow: 0 0 15px rgba(38, 38, 38, 0.1);
+}
+
 /* Efecto de brillo amatista muy sutil */
 .glow-amethyst {
   box-shadow: 0 0 15px rgba(107, 33, 168, 0.15);
+}
+
+:root[data-theme="light"] .glow-amethyst {
+  box-shadow: 0 0 15px rgba(147, 51, 234, 0.2);
 }
 
 /* ============================================
@@ -171,12 +217,25 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
+:root[data-theme="light"] .glass-dark {
+  background: rgba(235, 235, 235, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* Efecto de vidrio con textura metálica */
 .glass-metal {
   background: 
     linear-gradient(135deg, rgba(42, 42, 42, 0.8) 0%, rgba(26, 26, 26, 0.9) 100%);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(74, 74, 74, 0.3);
+}
+
+:root[data-theme="light"] .glass-metal {
+  background: 
+    linear-gradient(135deg, rgba(224, 224, 224, 0.8) 0%, rgba(212, 212, 212, 0.9) 100%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(184, 184, 184, 0.3);
 }
 
 /* ============================================
@@ -197,6 +256,17 @@ body {
   );
 }
 
+:root[data-theme="light"] .gothic-divider {
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    rgba(184, 184, 184, 0.4) 20%, 
+    rgba(147, 51, 234, 0.3) 50%, 
+    rgba(184, 184, 184, 0.4) 80%, 
+    transparent
+  );
+}
+
 .gothic-divider::before,
 .gothic-divider::after {
   content: '';
@@ -208,6 +278,12 @@ body {
   background: rgba(107, 33, 168, 0.3);
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(107, 33, 168, 0.4);
+}
+
+:root[data-theme="light"] .gothic-divider::before,
+:root[data-theme="light"] .gothic-divider::after {
+  background: rgba(147, 51, 234, 0.3);
+  box-shadow: 0 0 6px rgba(147, 51, 234, 0.4);
 }
 
 .gothic-divider::before {
@@ -232,15 +308,31 @@ body {
   border-left: 1px solid #1a1a1a;
 }
 
+:root[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-left: 1px solid #e0e0e0;
+}
+
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #3a3a3a 0%, #2d2d2d 100%);
   border-radius: 5px;
   border: 2px solid #0a0a0a;
 }
 
+:root[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b8b8b8 0%, #c7c7c7 100%);
+  border-radius: 5px;
+  border: 2px solid #f5f5f5;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
   box-shadow: 0 0 8px rgba(107, 33, 168, 0.2);
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a3a3a3 0%, #b8b8b8 100%);
+  box-shadow: 0 0 8px rgba(147, 51, 234, 0.2);
 }
 
 /* ============================================
@@ -252,9 +344,19 @@ body {
   color: #f3f4f6;
 }
 
+:root[data-theme="light"] ::selection {
+  background-color: rgba(147, 51, 234, 0.25);
+  color: #0a0a0a;
+}
+
 ::-moz-selection {
   background-color: rgba(107, 33, 168, 0.25);
   color: #f3f4f6;
+}
+
+:root[data-theme="light"] ::-moz-selection {
+  background-color: rgba(147, 51, 234, 0.25);
+  color: #0a0a0a;
 }
 
 /* ============================================

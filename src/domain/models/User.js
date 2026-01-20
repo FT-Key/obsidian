@@ -98,7 +98,6 @@ userSchema.methods.comparePassword = async function(password) {
 };
 
 // Indexes
-userSchema.index({ email: 1 });
 userSchema.index({ loyalty_points: -1 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

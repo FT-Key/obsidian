@@ -50,9 +50,9 @@ cartSchema.virtual('total').get(function() {
 });
 
 // Update date on modification
-cartSchema.pre('save', function(next) {
+// ⚠️ IMPORTANTE: NO uses next() cuando usas async/await
+cartSchema.pre('save', async function() {
   this.updated_at = Date.now();
-  next();
 });
 
 // Indexes

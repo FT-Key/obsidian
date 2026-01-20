@@ -28,7 +28,14 @@ const favoriteSchema = new mongoose.Schema({
     default: Date.now
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// Virtual para contar items
+favoriteSchema.virtual('item_count').get(function() {
+  return this.items.length;
 });
 
 // Indexes

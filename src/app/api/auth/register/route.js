@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import authService from '@/domain/services/authService';
+import authService from '@/domain/services/auth.service';
 import { registerSchema, validate, formatErrors } from '@/domain/validators/user.schema';
 
 export async function POST(request) {
