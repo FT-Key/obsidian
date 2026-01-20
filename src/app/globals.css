@@ -418,3 +418,83 @@ body {
     0 calc(100% - 10px)
   );
 }
+
+/* ============================================
+   GRADIENTES RESPONSIVOS DARK/LIGHT MODE
+   ============================================ */
+
+/* Hero Section - Gradiente principal */
+.hero-gradient {
+  background: linear-gradient(
+    to bottom, 
+    var(--color-gothic-abyss) 0%, 
+    rgba(10, 10, 10, 0.85) 50%, 
+    var(--color-gothic-abyss) 100%
+  );
+}
+
+:root[data-theme="light"] .hero-gradient {
+  background: linear-gradient(
+    to bottom, 
+    rgba(245, 245, 245, 0.95) 0%, 
+    rgba(245, 245, 245, 0.75) 50%, 
+    rgba(245, 245, 245, 0.95) 100%
+  );
+}
+
+/* Secciones regulares - Gradiente suave */
+.section-gradient {
+  background: linear-gradient(
+    to bottom, 
+    var(--color-gothic-abyss), 
+    transparent, 
+    var(--color-gothic-abyss)
+  );
+}
+
+:root[data-theme="light"] .section-gradient {
+  background: linear-gradient(
+    to bottom, 
+    rgba(245, 245, 245, 0.9) 0%, 
+    rgba(245, 245, 245, 0.6) 50%, 
+    rgba(245, 245, 245, 0.9) 100%
+  );
+}
+
+/* Stats Section - Gradiente más sólido */
+.stats-gradient {
+  background: linear-gradient(
+    to bottom, 
+    var(--color-gothic-abyss), 
+    rgba(10, 10, 10, 0.9), 
+    var(--color-gothic-abyss)
+  );
+}
+
+:root[data-theme="light"] .stats-gradient {
+  background: linear-gradient(
+    to bottom, 
+    rgba(245, 245, 245, 0.95) 0%, 
+    rgba(245, 245, 245, 0.85) 50%, 
+    rgba(245, 245, 245, 0.95) 100%
+  );
+}
+
+/* CTA Section - Gradiente intermedio */
+.cta-gradient {
+  background: linear-gradient(
+    to bottom, 
+    var(--color-gothic-abyss), 
+    rgba(10, 10, 10, 0.85), 
+    var(--color-gothic-abyss)
+  );
+}
+
+:root[data-theme="light"] .cta-gradient {
+  background: linear-gradient(
+    to bottom, 
+    rgba(245, 245, 245, 0.92) 0%, 
+    rgba(245, 245, 245, 0.75) 50%, 
+    rgba(245, 245, 245, 0.92) 100%
+  );
+}

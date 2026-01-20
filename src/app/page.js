@@ -116,7 +116,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="bg-[#0a0a0a]">
+    <div style={{ background: 'var(--color-gothic-abyss)' }}>
       
       {/* Hero Section - Fixed Background */}
       <section 
@@ -129,7 +129,9 @@ export default function HomePage() {
             backgroundImage: "url('https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1920&q=80')",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/70 via-[#0a0a0a]/85 to-[#0a0a0a]"></div>
+          <div 
+            className="absolute inset-0 hero-gradient"
+          ></div>
         </div>
 
         <motion.div 
@@ -148,17 +150,18 @@ export default function HomePage() {
             className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 text-shadow-metal"
             variants={fadeInUp}
           >
-            <span className="bg-gradient-to-r from-[#f3f4f6] via-[#e5e7eb] to-[#d1d5db] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[var(--color-gothic-pearl)] via-[var(--color-gothic-chrome)] to-[var(--color-gothic-silver)] bg-clip-text text-transparent">
               Descubre Tu
             </span>
             <br />
-            <span className="bg-gradient-to-r from-[#6b21a8] via-[#7c2d95] to-[#6b21a8] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[var(--color-gothic-amethyst)] via-[var(--color-gothic-plum)] to-[var(--color-gothic-amethyst)] bg-clip-text text-transparent">
               Estilo Único
             </span>
           </motion.h1>
 
           <motion.p 
-            className="text-xl text-[#9ca3af] mb-12 max-w-2xl mx-auto"
+            className="text-xl mb-12 max-w-2xl mx-auto"
+            style={{ color: 'var(--color-gothic-smoke)' }}
             variants={fadeInUp}
           >
             Servicios de belleza premium y productos exclusivos de moda para realzar tu personalidad
@@ -182,8 +185,16 @@ export default function HomePage() {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="w-6 h-10 border-2 border-[#6b21a8] rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-[#6b21a8] rounded-full"></div>
+          <div 
+            className="w-6 h-10 rounded-full flex justify-center pt-2"
+            style={{
+              border: '2px solid var(--color-gothic-amethyst)'
+            }}
+          >
+            <div 
+              className="w-1 h-2 rounded-full"
+              style={{ background: 'var(--color-gothic-amethyst)' }}
+            ></div>
           </div>
         </motion.div>
       </section>
@@ -200,7 +211,9 @@ export default function HomePage() {
             filter: 'brightness(0.3)',
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+        <div 
+          className="absolute inset-0 section-gradient"
+        ></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div 
@@ -211,10 +224,16 @@ export default function HomePage() {
             variants={fadeInUp}
           >
             <Badge variant="secondary" className="mb-4">Nuestros Servicios</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+            <h2 
+              className="text-4xl md:text-5xl font-bold mb-4 text-shadow-metal"
+              style={{ color: 'var(--color-gothic-pearl)' }}
+            >
               Servicios de Belleza Premium
             </h2>
-            <p className="text-[#9ca3af] text-lg max-w-2xl mx-auto">
+            <p 
+              className="text-lg max-w-2xl mx-auto"
+              style={{ color: 'var(--color-gothic-smoke)' }}
+            >
               Tratamientos profesionales con productos de alta calidad
             </p>
           </motion.div>
@@ -261,7 +280,9 @@ export default function HomePage() {
             filter: 'brightness(0.25)',
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+        <div 
+          className="absolute inset-0 section-gradient"
+        ></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div 
@@ -274,10 +295,16 @@ export default function HomePage() {
             <Badge variant="success" icon={ShoppingBag} className="mb-4">
               Tienda Online
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+            <h2 
+              className="text-4xl md:text-5xl font-bold mb-4 text-shadow-metal"
+              style={{ color: 'var(--color-gothic-pearl)' }}
+            >
               Productos Exclusivos
             </h2>
-            <p className="text-[#9ca3af] text-lg max-w-2xl mx-auto">
+            <p 
+              className="text-lg max-w-2xl mx-auto"
+              style={{ color: 'var(--color-gothic-smoke)' }}
+            >
               Ropa, carteras y accesorios seleccionados especialmente para ti
             </p>
           </motion.div>
@@ -327,7 +354,9 @@ export default function HomePage() {
             filter: 'brightness(0.25)',
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+        <div 
+          className="absolute inset-0 section-gradient"
+        ></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -340,7 +369,10 @@ export default function HomePage() {
             <Badge variant="primary" icon={Star} glow className="mb-4">
               Destacados
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-4 text-shadow-metal">
+            <h2 
+              className="text-4xl md:text-5xl font-bold mb-4 text-shadow-metal"
+              style={{ color: 'var(--color-gothic-pearl)' }}
+            >
               Lo Más Popular
             </h2>
           </motion.div>
@@ -368,7 +400,9 @@ export default function HomePage() {
             filter: 'brightness(0.3)',
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]"></div>
+        <div 
+          className="absolute inset-0 stats-gradient"
+        ></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div 
@@ -381,10 +415,16 @@ export default function HomePage() {
             <Badge variant="warning" icon={Crown} className="mb-4">
               Sobre Nosotros
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-6 text-shadow-metal">
+            <h2 
+              className="text-4xl md:text-5xl font-bold mb-6 text-shadow-metal"
+              style={{ color: 'var(--color-gothic-pearl)' }}
+            >
               Tu Destino de Belleza y Estilo
             </h2>
-            <p className="text-[#9ca3af] text-lg max-w-3xl mx-auto leading-relaxed mb-12">
+            <p 
+              className="text-lg max-w-3xl mx-auto leading-relaxed mb-12"
+              style={{ color: 'var(--color-gothic-smoke)' }}
+            >
               En Obsidian, fusionamos la elegancia gótica con la belleza moderna. Ofrecemos servicios profesionales de manicure y una selección exclusiva de productos de moda para que expreses tu estilo único.
             </p>
           </motion.div>
@@ -405,8 +445,16 @@ export default function HomePage() {
               <motion.div key={index} variants={fadeInScale}>
                 <Card variant="glass" hoverable className="text-center">
                   <div className="py-6">
-                    <stat.icon className="w-12 h-12 text-[#6b21a8] mx-auto mb-4" />
-                    <div className="text-4xl font-bold text-[#f3f4f6] mb-2">{stat.value}</div>
+                    <stat.icon 
+                      className="w-12 h-12 mx-auto mb-4"
+                      style={{ color: 'var(--color-gothic-amethyst)' }}
+                    />
+                    <div 
+                      className="text-4xl font-bold mb-2"
+                      style={{ color: 'var(--color-gothic-pearl)' }}
+                    >
+                      {stat.value}
+                    </div>
                     <Badge variant={stat.variant} size="sm">{stat.label}</Badge>
                   </div>
                 </Card>
@@ -428,7 +476,9 @@ export default function HomePage() {
             filter: 'brightness(0.25)',
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/85 to-[#0a0a0a]"></div>
+        <div 
+          className="absolute inset-0 cta-gradient"
+        ></div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div
@@ -440,7 +490,10 @@ export default function HomePage() {
             <Card variant="glass" className="text-center">
               <div className="py-16 px-8">
                 <motion.div variants={fadeInScale}>
-                  <Sparkles className="w-16 h-16 text-[#6b21a8] mx-auto mb-6" />
+                  <Sparkles 
+                    className="w-16 h-16 mx-auto mb-6"
+                    style={{ color: 'var(--color-gothic-amethyst)' }}
+                  />
                   
                   <Badge variant="primary" size="lg" glow className="mb-6">
                     ¡Únete Ahora!
@@ -448,14 +501,16 @@ export default function HomePage() {
                 </motion.div>
 
                 <motion.h2 
-                  className="text-4xl md:text-5xl font-bold text-[#f3f4f6] mb-6 text-shadow-metal"
+                  className="text-4xl md:text-5xl font-bold mb-6 text-shadow-metal"
+                  style={{ color: 'var(--color-gothic-pearl)' }}
                   variants={fadeInUp}
                 >
                   ¿Lista para Brillar?
                 </motion.h2>
 
                 <motion.p 
-                  className="text-xl text-[#9ca3af] mb-12 max-w-2xl mx-auto"
+                  className="text-xl mb-12 max-w-2xl mx-auto"
+                  style={{ color: 'var(--color-gothic-smoke)' }}
                   variants={fadeInUp}
                 >
                   Reserva tu cita ahora y descubre la experiencia Obsidian. Belleza, elegancia y estilo en un solo lugar.
@@ -483,10 +538,23 @@ export default function HomePage() {
                     { title: 'Atención Personalizada', desc: 'Cuidamos cada detalle' }
                   ].map((item, index) => (
                     <motion.div key={index} className="flex items-start gap-3 text-left" variants={fadeInUp}>
-                      <CheckCircle className="w-6 h-6 text-[#6b21a8] flex-shrink-0 mt-1" />
+                      <CheckCircle 
+                        className="w-6 h-6 flex-shrink-0 mt-1"
+                        style={{ color: 'var(--color-gothic-amethyst)' }}
+                      />
                       <div>
-                        <h4 className="text-[#e5e7eb] font-semibold mb-1">{item.title}</h4>
-                        <p className="text-[#9ca3af] text-sm">{item.desc}</p>
+                        <h4 
+                          className="font-semibold mb-1"
+                          style={{ color: 'var(--color-gothic-chrome)' }}
+                        >
+                          {item.title}
+                        </h4>
+                        <p 
+                          className="text-sm"
+                          style={{ color: 'var(--color-gothic-smoke)' }}
+                        >
+                          {item.desc}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
