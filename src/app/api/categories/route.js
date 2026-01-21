@@ -1,7 +1,7 @@
 
 // app/api/categories/route.js
 import { NextResponse } from 'next/server';
-import categoryService from '@/domain/services/CategoryService';
+import categoryService from '@/domain/services/category.service.js';
 import { connectDB } from '@/lib/mongodb';
 
 /**

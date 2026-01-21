@@ -2,7 +2,7 @@
 // app/api/users/me/appointments/route.js
 // ===================================
 import { NextResponse } from 'next/server';
-import userService from '@/application/services/UserService';
+import userService from '@/domain/services/user.service.js';
 import { connectDB } from '@/lib/mongodb';
 
 /**

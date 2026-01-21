@@ -1,16 +1,43 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
-import { Sparkles, Mail, Phone, MapPin, Instagram, Facebook, Twitter, Heart, Calendar, ShoppingBag } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Heart, Calendar, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 
 /**
- * Footer Component - Gothic Dark Medieval con Clip-Path Original
- * Footer con diseño gótico y mapa integrado
+ * Footer Component - Gothic Dark Medieval con soporte Dark/Light Mode
+ * Footer con diseño gótico, mapa integrado y logo animado
  */
-const Footer = () => {
+const Footer = ({ theme }) => {
   const currentYear = new Date().getFullYear();
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [displayTheme, setDisplayTheme] = useState(theme || 'dark');
+
+  // Efecto de flip cuando cambia el tema
+  useEffect(() => {
+    if (!theme) return;
+    
+    setIsFlipping(true);
+    const timer = setTimeout(() => {
+      setDisplayTheme(theme);
+      setIsFlipping(false);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [theme]);
+
+  // Logos
+  const darkLogo = '/logo-obsidian.png';
+  const lightLogo = '/logo-zabina.jpg';
+  const currentLogo = displayTheme === 'dark' ? darkLogo : lightLogo;
+  const backLogo = displayTheme === 'dark' ? lightLogo : darkLogo;
+
+  // Nombres
+  const darkName = 'OBSIDIAN';
+  const lightName = 'ZABINA';
+  const currentName = displayTheme === 'dark' ? darkName : lightName;
+  const backName = displayTheme === 'dark' ? lightName : darkName;
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -33,16 +60,35 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-gothic-void overflow-hidden">
+    <footer className="relative overflow-hidden" style={{ backgroundColor: 'var(--color-gothic-void)' }}>
       {/* Decoración superior con clip-path gótico */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gothic-abyss" style={{
-        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 95% 80%, 90% 100%, 85% 70%, 80% 100%, 75% 85%, 70% 100%, 65% 75%, 60% 100%, 55% 80%, 50% 100%, 45% 80%, 40% 100%, 35% 75%, 30% 100%, 25% 85%, 20% 100%, 15% 70%, 10% 100%, 5% 80%, 0 100%)'
-      }}>
+      <div 
+        className="absolute top-0 left-0 right-0 h-16" 
+        style={{
+          backgroundColor: 'var(--color-gothic-abyss)',
+          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 95% 80%, 90% 100%, 85% 70%, 80% 100%, 75% 85%, 70% 100%, 65% 75%, 60% 100%, 55% 80%, 50% 100%, 45% 80%, 40% 100%, 35% 75%, 30% 100%, 25% 85%, 20% 100%, 15% 70%, 10% 100%, 5% 80%, 0 100%)'
+        }}
+      >
         {/* Decoración de puntos sutiles */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2">
-          <span className="w-1.5 h-1.5 bg-gothic-amethyst rounded-full shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
-          <span className="w-1.5 h-1.5 bg-gothic-silver rounded-full opacity-40"></span>
-          <span className="w-1.5 h-1.5 bg-gothic-amethyst rounded-full shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
+          <span 
+            className="w-1.5 h-1.5 rounded-full"
+            style={{
+              backgroundColor: 'var(--color-gothic-amethyst)',
+              boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+            }}
+          />
+          <span 
+            className="w-1.5 h-1.5 rounded-full opacity-40"
+            style={{ backgroundColor: 'var(--color-gothic-silver)' }}
+          />
+          <span 
+            className="w-1.5 h-1.5 rounded-full"
+            style={{
+              backgroundColor: 'var(--color-gothic-amethyst)',
+              boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+            }}
+          />
         </div>
       </div>
 
@@ -54,43 +100,126 @@ const Footer = () => {
 
             {/* Brand & Info - 4 cols */}
             <div className="lg:col-span-4">
-              {/* Logo */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-8 h-8 sm:w-10 sm:h-10 clip-path-gothic-md bg-gradient-to-br from-gothic-chrome via-gothic-silver to-gothic-ash border border-gothic-pewter shadow-[0_2px_8px_rgba(0,0,0,0.6)] group-hover:shadow-[0_2px_12px_rgba(107,33,168,0.3)] transition-all duration-300">
-                  <Image src="/logo.png" alt="Logo" className="navbar-logo" width={60} height={60} />
+              {/* Logo con flip animado */}
+              <div className={`flex items-center gap-3 mb-6 ${isFlipping ? 'brand-flipping' : ''}`}>
+                {/* Logo con flip 3D */}
+                <div className={`brand-logo-container ${isFlipping ? 'brand-logo-theme-flip' : ''}`}>
+                  <div className={`brand-logo-inner ${isFlipping ? 'brand-logo-theme-flip-inner' : ''}`}>
+                    {/* Frente */}
+                    <div
+                      className="brand-logo-front clip-path-gothic-md"
+                      style={{
+                        background: 'linear-gradient(to bottom right, var(--color-gothic-chrome), var(--color-gothic-silver), var(--color-gothic-ash))',
+                        borderColor: 'var(--color-gothic-pewter)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
+                      }}
+                    >
+                      <Image
+                        src={currentLogo}
+                        alt="Logo Front"
+                        className="object-contain p-1"
+                        width={40}
+                        height={40}
+                      />
+                    </div>
+                    {/* Atrás */}
+                    <div
+                      className="brand-logo-back clip-path-gothic-md"
+                      style={{
+                        background: 'linear-gradient(to bottom right, var(--color-gothic-chrome), var(--color-gothic-silver), var(--color-gothic-ash))',
+                        borderColor: 'var(--color-gothic-pewter)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
+                      }}
+                    >
+                      <Image
+                        src={backLogo}
+                        alt="Logo Back"
+                        className="object-contain p-1"
+                        width={40}
+                        height={40}
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {/* Texto con animación de quemado */}
                 <div className="flex flex-col">
-                  <span className="text-gothic-pearl font-bold text-2xl tracking-wider text-shadow-metal">
-                    OBSIDIAN
-                  </span>
-                  <span className="text-gothic-smoke text-xs tracking-widest">
+                  <div className={`brand-name-container ${isFlipping ? 'brand-name-theme-flip' : ''}`}>
+                    <span className="brand-name">
+                      {currentName}
+                    </span>
+                    <span className={`brand-name brand-name-back ${isFlipping ? 'brand-name-theme-flip-back' : ''}`}>
+                      {backName}
+                    </span>
+                  </div>
+                  <span className="brand-subtitle">
                     BEAUTY & STYLE
                   </span>
                 </div>
               </div>
 
-              <p className="text-gothic-smoke text-sm leading-relaxed mb-6">
+              <p 
+                className="text-sm leading-relaxed mb-6"
+                style={{ color: 'var(--color-gothic-smoke)' }}
+              >
                 Tu destino de belleza y estilo. Servicios profesionales de manicure y una selección exclusiva de productos de moda.
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <a href="tel:+543814123456" className="flex items-center gap-3 text-gothic-silver hover:text-gothic-pearl transition-colors duration-300 group">
-                  <div className="w-8 h-8 rounded-md bg-gothic-iron border border-gothic-steel flex items-center justify-center group-hover:bg-gothic-steel transition-colors duration-300">
+                <a 
+                  href="tel:+543814123456" 
+                  className="flex items-center gap-3 transition-colors duration-300 group"
+                  style={{ color: 'var(--color-gothic-silver)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-gothic-pearl)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-gothic-silver)'}
+                >
+                  <div 
+                    className="w-8 h-8 rounded-md border flex items-center justify-center transition-colors duration-300"
+                    style={{
+                      backgroundColor: 'var(--color-gothic-iron)',
+                      borderColor: 'var(--color-gothic-steel)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-gothic-steel)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-gothic-iron)'}
+                  >
                     <Phone className="w-4 h-4" />
                   </div>
                   <span className="text-sm">+54 381 412-3456</span>
                 </a>
 
-                <a href="mailto:info@obsidian.com" className="flex items-center gap-3 text-gothic-silver hover:text-gothic-pearl transition-colors duration-300 group">
-                  <div className="w-8 h-8 rounded-md bg-gothic-iron border border-gothic-steel flex items-center justify-center group-hover:bg-gothic-steel transition-colors duration-300">
+                <a 
+                  href="mailto:info@obsidian.com" 
+                  className="flex items-center gap-3 transition-colors duration-300 group"
+                  style={{ color: 'var(--color-gothic-silver)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-gothic-pearl)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-gothic-silver)'}
+                >
+                  <div 
+                    className="w-8 h-8 rounded-md border flex items-center justify-center transition-colors duration-300"
+                    style={{
+                      backgroundColor: 'var(--color-gothic-iron)',
+                      borderColor: 'var(--color-gothic-steel)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-gothic-steel)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-gothic-iron)'}
+                  >
                     <Mail className="w-4 h-4" />
                   </div>
                   <span className="text-sm">info@obsidian.com</span>
                 </a>
 
-                <div className="flex items-start gap-3 text-gothic-silver">
-                  <div className="w-8 h-8 rounded-md bg-gothic-iron border border-gothic-steel flex items-center justify-center flex-shrink-0">
+                <div 
+                  className="flex items-start gap-3"
+                  style={{ color: 'var(--color-gothic-silver)' }}
+                >
+                  <div 
+                    className="w-8 h-8 rounded-md border flex items-center justify-center flex-shrink-0"
+                    style={{
+                      backgroundColor: 'var(--color-gothic-iron)',
+                      borderColor: 'var(--color-gothic-steel)'
+                    }}
+                  >
                     <MapPin className="w-4 h-4" />
                   </div>
                   <span className="text-sm leading-relaxed">
@@ -102,8 +231,17 @@ const Footer = () => {
 
             {/* Quick Links - 2 cols */}
             <div className="lg:col-span-2">
-              <h3 className="text-gothic-pearl font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
-                <span className="w-1 h-4 bg-gothic-amethyst shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
+              <h3 
+                className="font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2"
+                style={{ color: 'var(--color-gothic-pearl)' }}
+              >
+                <span 
+                  className="w-1 h-4"
+                  style={{
+                    backgroundColor: 'var(--color-gothic-amethyst)',
+                    boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+                  }}
+                />
                 Links Rápidos
               </h3>
               <ul className="space-y-3">
@@ -111,7 +249,16 @@ const Footer = () => {
                   <li key={idx}>
                     <a
                       href={link.href}
-                      className="text-gothic-silver hover:text-gothic-pearl text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
+                      className="text-sm transition-all duration-300 inline-block"
+                      style={{ color: 'var(--color-gothic-silver)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'var(--color-gothic-pearl)';
+                        e.currentTarget.style.transform = 'translateX(4px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }}
                     >
                       {link.name}
                     </a>
@@ -122,8 +269,17 @@ const Footer = () => {
 
             {/* Services - 2 cols */}
             <div className="lg:col-span-2">
-              <h3 className="text-gothic-pearl font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
-                <span className="w-1 h-4 bg-gothic-amethyst shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
+              <h3 
+                className="font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2"
+                style={{ color: 'var(--color-gothic-pearl)' }}
+              >
+                <span 
+                  className="w-1 h-4"
+                  style={{
+                    backgroundColor: 'var(--color-gothic-amethyst)',
+                    boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+                  }}
+                />
                 Servicios
               </h3>
               <ul className="space-y-3">
@@ -131,7 +287,16 @@ const Footer = () => {
                   <li key={idx}>
                     <a
                       href={service.href}
-                      className="text-gothic-silver hover:text-gothic-pearl text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
+                      className="text-sm transition-all duration-300 inline-block"
+                      style={{ color: 'var(--color-gothic-silver)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'var(--color-gothic-pearl)';
+                        e.currentTarget.style.transform = 'translateX(4px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }}
                     >
                       {service.name}
                     </a>
@@ -142,16 +307,43 @@ const Footer = () => {
 
             {/* Map - 4 cols */}
             <div className="lg:col-span-4">
-              <h3 className="text-gothic-pearl font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
-                <span className="w-1 h-4 bg-gothic-amethyst shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
+              <h3 
+                className="font-bold text-sm uppercase tracking-wider mb-6 flex items-center gap-2"
+                style={{ color: 'var(--color-gothic-pearl)' }}
+              >
+                <span 
+                  className="w-1 h-4"
+                  style={{
+                    backgroundColor: 'var(--color-gothic-amethyst)',
+                    boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+                  }}
+                />
                 Ubicación
               </h3>
-              <div className="relative w-full h-48 rounded-lg overflow-hidden border-2 border-gothic-steel shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+              <div 
+                className="relative w-full h-48 rounded-lg overflow-hidden border-2"
+                style={{
+                  borderColor: 'var(--color-gothic-steel)',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.8)'
+                }}
+              >
                 {/* Decoraciones de esquina */}
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gothic-pewter opacity-60 z-10"></div>
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gothic-pewter opacity-60 z-10"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gothic-pewter opacity-60 z-10"></div>
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gothic-pewter opacity-60 z-10"></div>
+                <div 
+                  className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 opacity-60 z-10"
+                  style={{ borderColor: 'var(--color-gothic-pewter)' }}
+                />
+                <div 
+                  className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 opacity-60 z-10"
+                  style={{ borderColor: 'var(--color-gothic-pewter)' }}
+                />
+                <div 
+                  className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 opacity-60 z-10"
+                  style={{ borderColor: 'var(--color-gothic-pewter)' }}
+                />
+                <div 
+                  className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 opacity-60 z-10"
+                  style={{ borderColor: 'var(--color-gothic-pewter)' }}
+                />
 
                 {/* Google Maps Iframe */}
                 <iframe
@@ -162,18 +354,33 @@ const Footer = () => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="grayscale contrast-125 opacity-80"
-                ></iframe>
+                  className="contrast-125 opacity-80"
+                />
               </div>
             </div>
           </div>
 
           {/* Divider Gótico */}
-          <div className="relative h-[1px] bg-gradient-to-r from-transparent via-gothic-steel to-transparent mb-8">
+          <div className="relative h-[1px] mb-8" style={{ background: 'linear-gradient(to right, transparent, var(--color-gothic-steel), transparent)' }}>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-4">
-              <span className="w-2 h-2 bg-gothic-amethyst rounded-full shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
-              <span className="w-2 h-2 bg-gothic-silver rounded-full opacity-40"></span>
-              <span className="w-2 h-2 bg-gothic-amethyst rounded-full shadow-[0_0_8px_rgba(107,33,168,0.4)]"></span>
+              <span 
+                className="w-2 h-2 rounded-full"
+                style={{
+                  backgroundColor: 'var(--color-gothic-amethyst)',
+                  boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+                }}
+              />
+              <span 
+                className="w-2 h-2 rounded-full opacity-40"
+                style={{ backgroundColor: 'var(--color-gothic-silver)' }}
+              />
+              <span 
+                className="w-2 h-2 rounded-full"
+                style={{
+                  backgroundColor: 'var(--color-gothic-amethyst)',
+                  boxShadow: '0 0 8px rgba(107, 33, 168, 0.4)'
+                }}
+              />
             </div>
           </div>
 
@@ -181,11 +388,14 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 
             {/* Copyright */}
-            <div className="flex items-center gap-2 text-gothic-smoke text-sm">
+            <div 
+              className="flex items-center gap-2 text-sm"
+              style={{ color: 'var(--color-gothic-smoke)' }}
+            >
               <span>© {currentYear} Obsidian Beauty & Style</span>
-              <span className="text-gothic-steel">|</span>
+              <span style={{ color: 'var(--color-gothic-steel)' }}>|</span>
               <span className="flex items-center gap-1">
-                Hecho con <Heart className="w-4 h-4 text-gothic-crimson" fill="currentColor" /> en Tucumán
+                Hecho con <Heart className="w-4 h-4" style={{ color: 'var(--color-gothic-crimson)' }} fill="currentColor" /> en Tucumán
               </span>
             </div>
 
@@ -196,16 +406,26 @@ const Footer = () => {
                   key={idx}
                   href={social.href}
                   aria-label={social.label}
-                  className={clsx(
-                    'w-10 h-10 rounded-md',
-                    'bg-gothic-iron border border-gothic-steel',
-                    'flex items-center justify-center',
-                    'text-gothic-silver hover:text-gothic-pearl',
-                    'hover:bg-gothic-steel hover:border-gothic-amethyst/30',
-                    'hover:shadow-[0_0_12px_rgba(107,33,168,0.2)]',
-                    'transition-all duration-300',
-                    'hover:scale-110'
-                  )}
+                  className="w-10 h-10 rounded-md border flex items-center justify-center transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--color-gothic-iron)',
+                    borderColor: 'var(--color-gothic-steel)',
+                    color: 'var(--color-gothic-silver)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--color-gothic-steel)';
+                    e.currentTarget.style.borderColor = 'rgba(107, 33, 168, 0.3)';
+                    e.currentTarget.style.color = 'var(--color-gothic-pearl)';
+                    e.currentTarget.style.boxShadow = '0 0 12px rgba(107, 33, 168, 0.2)';
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--color-gothic-iron)';
+                    e.currentTarget.style.borderColor = 'var(--color-gothic-steel)';
+                    e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
@@ -216,14 +436,20 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               <a
                 href="#servicios"
-                className={clsx(
-                  'px-4 py-2 rounded-md',
-                  'bg-gothic-iron border border-gothic-steel',
-                  'text-gothic-silver hover:text-gothic-pearl text-sm font-medium',
-                  'hover:bg-gothic-steel',
-                  'transition-all duration-300',
-                  'flex items-center gap-2'
-                )}
+                className="px-4 py-2 rounded-md border text-sm font-medium transition-all duration-300 flex items-center gap-2"
+                style={{
+                  backgroundColor: 'var(--color-gothic-iron)',
+                  borderColor: 'var(--color-gothic-steel)',
+                  color: 'var(--color-gothic-silver)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-gothic-steel)';
+                  e.currentTarget.style.color = 'var(--color-gothic-pearl)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-gothic-iron)';
+                  e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                }}
               >
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">Reservar</span>
@@ -231,14 +457,20 @@ const Footer = () => {
 
               <a
                 href="#productos"
-                className={clsx(
-                  'px-4 py-2 rounded-md',
-                  'bg-gothic-iron border border-gothic-steel',
-                  'text-gothic-silver hover:text-gothic-pearl text-sm font-medium',
-                  'hover:bg-gothic-steel',
-                  'transition-all duration-300',
-                  'flex items-center gap-2'
-                )}
+                className="px-4 py-2 rounded-md border text-sm font-medium transition-all duration-300 flex items-center gap-2"
+                style={{
+                  backgroundColor: 'var(--color-gothic-iron)',
+                  borderColor: 'var(--color-gothic-steel)',
+                  color: 'var(--color-gothic-silver)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-gothic-steel)';
+                  e.currentTarget.style.color = 'var(--color-gothic-pearl)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-gothic-iron)';
+                  e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                }}
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span className="hidden sm:inline">Comprar</span>
@@ -249,7 +481,10 @@ const Footer = () => {
       </div>
 
       {/* Decoración inferior gótica */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gothic-amethyst/20 to-transparent"></div>
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-1"
+        style={{ background: 'linear-gradient(to right, transparent, rgba(107, 33, 168, 0.2), transparent)' }}
+      />
     </footer>
   );
 };

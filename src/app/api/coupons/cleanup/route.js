@@ -1,6 +1,6 @@
 // app/api/coupons/cleanup/route.js
 import { NextResponse } from 'next/server';
-import couponService from '@/domain/services/CouponService';
+import couponService from '@/domain/services/coupon.service.js';
 import { connectDB } from '@/lib/mongodb';
 
 /**
