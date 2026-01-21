@@ -144,7 +144,7 @@ const FASHION_IMAGES = {
   ],
   nails: [
     'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600',
-    'https://images.unsplash.com/photo-1610992015762-45b2d8f6c444?w=600',
+    'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600',
     'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600'
   ]
 };

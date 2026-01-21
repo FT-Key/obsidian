@@ -13,7 +13,7 @@ import AuthModal from '@/components/navbar/AuthModal';
 import Tooltip from '@/components/navbar/Tooltip';
 import BrandLogo from '@/components/navbar/BrandLogo';
 import { FavoritesButton, CartButton, SearchButton } from '@/components/navbar/NavbarActionButtons';
-import { useTheme } from '@/hooks/useTheme';
+import useThemeStore from '@/store/useThemeStore';
 import { MobileMenu } from '@/components/navbar/MobileMenu';
 import { UserDropdown } from '@/components/navbar/UserDropdown';
 
@@ -36,7 +36,12 @@ const Navbar = () => {
   const { count: favCount, loadFavorites } = useFavoritesStore();
 
   // Custom hooks
-  const { theme, toggleTheme, logoSrc, brandName, isLoaded } = useTheme();
+  const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const logoSrc = useThemeStore((state) => state.logoSrc);
+  const brandName = useThemeStore((state) => state.brandName);
+  const isLoaded = useThemeStore((state) => state.isLoaded);
+  const initTheme = useThemeStore((state) => state.initTheme);
 
   // Local state
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,6 +50,10 @@ const Navbar = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+   useEffect(() => {
+    initTheme();
+  }, [initTheme]);
 
   // Cargar carrito y favoritos cuando el usuario esté autenticado
   useEffect(() => {

@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import useThemeStore from '@/store/useThemeStore';
 
-const BrandLogo = ({ theme, logoSrc, brandName, onClick }) => {
+const BrandLogo = ({ onClick }) => {
+  const theme = useThemeStore((state) => state.theme);
   const [isFlipping, setIsFlipping] = useState(false);
   const [displayTheme, setDisplayTheme] = useState(theme);
 
@@ -13,6 +15,7 @@ const BrandLogo = ({ theme, logoSrc, brandName, onClick }) => {
       setDisplayTheme(theme);
       setIsFlipping(false);
     }, 400); // Cambia el logo a mitad de la animación (cuando está al revés)
+
     return () => clearTimeout(timer);
   }, [theme]);
 
@@ -27,7 +30,10 @@ const BrandLogo = ({ theme, logoSrc, brandName, onClick }) => {
   const backName = displayTheme === 'dark' ? lightName : darkName;
 
   return (
-    <button onClick={onClick} className={`flex items-center gap-2 sm:gap-3 group ${isFlipping ? 'brand-flipping' : ''}`}>
+    <button 
+      onClick={onClick} 
+      className={`flex items-center gap-2 sm:gap-3 group ${isFlipping ? 'brand-flipping' : ''}`}
+    >
       {/* Logo con flip 3D */}
       <div className={`brand-logo-container ${isFlipping ? 'brand-logo-theme-flip' : ''}`}>
         <div className={`brand-logo-inner ${isFlipping ? 'brand-logo-theme-flip-inner' : ''}`}>
@@ -46,7 +52,6 @@ const BrandLogo = ({ theme, logoSrc, brandName, onClick }) => {
               height={40}
             />
           </div>
-
           {/* Atrás */}
           <div
             className="brand-logo-back clip-path-gothic-md"

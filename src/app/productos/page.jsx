@@ -25,7 +25,7 @@ import useFavoritesStore from '@/store/useFavoritesStore';
 import toast from 'react-hot-toast';
 
 /**
- * Página de Lista de Productos - Diseño Gótico Creativo
+ * Página de Lista de Productos - Diseño Gótico con Dark/Light Mode
  */
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -35,8 +35,8 @@ const ProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [categories, setCategories] = useState([]);
-  const [favoriteProducts, setFavoriteProducts] = useState(new Set()); // IDs de productos en favoritos
-  const [togglingFavorite, setTogglingFavorite] = useState(null); // ID del producto siendo toggleado
+  const [favoriteProducts, setFavoriteProducts] = useState(new Set());
+  const [togglingFavorite, setTogglingFavorite] = useState(null);
   const LIMIT = 9;
 
   const [filters, setFilters] = useState({
@@ -127,18 +127,16 @@ const ProductsPage = () => {
     }
 
     try {
-      // Extraer el ID del usuario correctamente
       const userId = user._id || user.id;
       
       const response = await cartService.addItem(
         userId,
         product._id,
-        null, // variantId - ajustar si tienes variantes
-        1 // quantity
+        null,
+        1
       );
 
       if (response.success) {
-        // Actualizar el store
         await loadCart(userId);
         toast.success(`${product.name} agregado al carrito`);
       } else {
@@ -158,7 +156,6 @@ const ProductsPage = () => {
       return;
     }
 
-    // Prevenir clics múltiples
     if (togglingFavorite === product._id) {
       return;
     }
@@ -167,19 +164,15 @@ const ProductsPage = () => {
       setTogglingFavorite(product._id);
       const userId = user._id || user.id;
       
-      // Verificar en el backend si el producto está en favoritos
       const checkResponse = await favoriteService.check(userId, product._id);
       const isInFavorites = checkResponse?.is_favorite || false;
       
       if (isInFavorites) {
-        // Remover de favoritos
-        // Buscar el item en la lista de favoritos para obtener su ID
         const favoriteItem = favoriteItems.find(
           item => (item.product?._id || item.product) === product._id
         );
         
         if (favoriteItem) {
-          // Actualizar UI optimísticamente
           setFavoriteProducts(prev => {
             const newSet = new Set(prev);
             newSet.delete(product._id);
@@ -192,7 +185,6 @@ const ProductsPage = () => {
             await loadFavorites(userId);
             toast.success(`${product.name} eliminado de favoritos`);
           } else {
-            // Revertir cambio optimista si falló
             setFavoriteProducts(prev => {
               const newSet = new Set(prev);
               newSet.add(product._id);
@@ -201,8 +193,6 @@ const ProductsPage = () => {
           }
         }
       } else {
-        // Agregar a favoritos
-        // Actualizar UI optimísticamente
         setFavoriteProducts(prev => {
           const newSet = new Set(prev);
           newSet.add(product._id);
@@ -215,7 +205,6 @@ const ProductsPage = () => {
           await loadFavorites(userId);
           toast.success(`${product.name} agregado a favoritos`);
         } else {
-          // Revertir cambio optimista si falló
           setFavoriteProducts(prev => {
             const newSet = new Set(prev);
             newSet.delete(product._id);
@@ -226,7 +215,6 @@ const ProductsPage = () => {
     } catch (error) {
       console.error('Error toggling favorite:', error);
       
-      // Recargar favoritos para sincronizar estado
       const userId = user._id || user.id;
       await loadFavorites(userId);
       
@@ -237,43 +225,99 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div 
+      className="min-h-screen transition-colors duration-300"
+      style={{ backgroundColor: 'var(--color-gothic-abyss)' }}
+    >
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-[#121212] border-b border-[#2d2d2d] overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,_rgba(107,33,168,0.2)_0%,_transparent_50%)]"></div>
+      <div 
+        className="relative border-b overflow-hidden"
+        style={{ 
+          background: 'linear-gradient(to bottom right, var(--color-gothic-obsidian), var(--color-gothic-abyss), var(--color-gothic-shadow))',
+          borderColor: 'var(--color-gothic-steel)'
+        }}
+      >
+        {/* Decorative overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{ 
+            opacity: 0.05,
+            background: 'radial-gradient(circle at 50% 50%, rgba(107, 33, 168, 0.2) 0%, transparent 50%)'
+          }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
           <div className="text-center mb-12">
+            {/* Decorative divider */}
             <div className="inline-flex items-center gap-3 mb-4">
-              <div className="h-[2px] w-12 bg-gradient-to-r from-transparent to-[#6b21a8]" />
-              <Sparkles className="w-6 h-6 text-[#6b21a8]" />
-              <div className="h-[2px] w-12 bg-gradient-to-l from-transparent to-[#6b21a8]" />
+              <div 
+                className="h-[2px] w-12"
+                style={{ 
+                  background: 'linear-gradient(to right, transparent, var(--color-gothic-amethyst))'
+                }}
+              />
+              <Sparkles 
+                className="w-6 h-6"
+                style={{ color: 'var(--color-gothic-amethyst)' }}
+              />
+              <div 
+                className="h-[2px] w-12"
+                style={{ 
+                  background: 'linear-gradient(to left, transparent, var(--color-gothic-amethyst))'
+                }}
+              />
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e5e7eb] via-white to-[#d1d5db] mb-4">
+            <h1 
+              className="text-5xl md:text-6xl font-bold mb-4 text-shadow-metal"
+              style={{ color: 'var(--color-gothic-pearl)' }}
+            >
               Nuestros Productos
             </h1>
 
-            <p className="text-[#9ca3af] text-lg max-w-2xl mx-auto">
+            <p 
+              className="text-lg max-w-2xl mx-auto"
+              style={{ color: 'var(--color-gothic-smoke)' }}
+            >
               Descubre nuestra colección gótica de productos de belleza y estilo
             </p>
           </div>
 
           {/* Search */}
           <div className="max-w-3xl mx-auto">
-            <div className="relative flex items-center gap-3 bg-[#1a1a1a] border-2 border-[#3a3a3a] p-2">
-              <Search className="w-5 h-5 text-[#6b7280] ml-3" />
+            <div 
+              className="relative flex items-center gap-3 border-2 p-2 rounded-md transition-all duration-300"
+              style={{
+                backgroundColor: 'var(--color-gothic-obsidian)',
+                borderColor: 'var(--color-gothic-gunmetal)'
+              }}
+            >
+              <Search 
+                className="w-5 h-5 ml-3"
+                style={{ color: 'var(--color-gothic-ash)' }}
+              />
               <input
                 type="text"
                 placeholder="Buscar productos..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="flex-1 bg-transparent text-white outline-none py-3"
+                className="flex-1 bg-transparent outline-none py-3"
+                style={{ color: 'var(--color-gothic-pearl)' }}
               />
               <button
                 onClick={handleSearch}
-                className="px-6 py-3 bg-gray-200 text-gray-900 font-semibold"
+                className="px-6 py-3 font-semibold rounded transition-all duration-300 clip-path-gothic-sm"
+                style={{
+                  background: 'linear-gradient(to bottom right, var(--color-gothic-chrome), var(--color-gothic-silver), var(--color-gothic-ash))',
+                  color: 'var(--color-gothic-obsidian)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(107, 33, 168, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               >
                 Buscar
               </button>
@@ -294,12 +338,33 @@ const ProductsPage = () => {
                   setSortBy(chip.value);
                   setPage(1);
                 }}
-                className={clsx(
-                  'flex items-center gap-2 px-4 py-2 border',
+                className="flex items-center gap-2 px-4 py-2 border rounded-md transition-all duration-300"
+                style={
                   sortBy === chip.value
-                    ? 'bg-[#6b21a8] border-[#6b21a8] text-white'
-                    : 'bg-[#1a1a1a] border-[#3a3a3a] text-gray-400'
-                )}
+                    ? {
+                        backgroundColor: 'var(--color-gothic-amethyst)',
+                        borderColor: 'var(--color-gothic-amethyst)',
+                        color: 'var(--color-gothic-pearl)',
+                        boxShadow: '0 0 12px rgba(107, 33, 168, 0.3)'
+                      }
+                    : {
+                        backgroundColor: 'var(--color-gothic-obsidian)',
+                        borderColor: 'var(--color-gothic-gunmetal)',
+                        color: 'var(--color-gothic-smoke)'
+                      }
+                }
+                onMouseEnter={(e) => {
+                  if (sortBy !== chip.value) {
+                    e.currentTarget.style.borderColor = 'var(--color-gothic-pewter)';
+                    e.currentTarget.style.color = 'var(--color-gothic-silver)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (sortBy !== chip.value) {
+                    e.currentTarget.style.borderColor = 'var(--color-gothic-gunmetal)';
+                    e.currentTarget.style.color = 'var(--color-gothic-smoke)';
+                  }
+                }}
               >
                 <chip.icon className="w-4 h-4" />
                 {chip.label}
@@ -312,6 +377,7 @@ const ProductsPage = () => {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Filters */}
           <aside className="lg:w-80">
             <ProductFilters
               categories={categories}
@@ -324,8 +390,19 @@ const ProductsPage = () => {
             />
           </aside>
 
+          {/* Products Grid */}
           <main className="flex-1">
-            {!loading && products.length > 0 && (
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div 
+                  className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin"
+                  style={{ 
+                    borderColor: 'var(--color-gothic-steel)',
+                    borderTopColor: 'transparent'
+                  }}
+                />
+              </div>
+            ) : products.length > 0 ? (
               <>
                 <div
                   className={clsx(
@@ -354,6 +431,28 @@ const ProductsPage = () => {
                   onPageChange={setPage}
                 />
               </>
+            ) : (
+              <div 
+                className="text-center py-20 border-2 rounded-lg"
+                style={{
+                  backgroundColor: 'var(--color-gothic-obsidian)',
+                  borderColor: 'var(--color-gothic-steel)'
+                }}
+              >
+                <Sparkles 
+                  className="w-16 h-16 mx-auto mb-4"
+                  style={{ color: 'var(--color-gothic-ash)' }}
+                />
+                <h3 
+                  className="text-xl font-bold mb-2"
+                  style={{ color: 'var(--color-gothic-silver)' }}
+                >
+                  No se encontraron productos
+                </h3>
+                <p style={{ color: 'var(--color-gothic-smoke)' }}>
+                  Intenta ajustar los filtros o buscar algo diferente
+                </p>
+              </div>
             )}
           </main>
         </div>

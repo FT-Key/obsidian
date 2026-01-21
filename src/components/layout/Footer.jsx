@@ -1,43 +1,98 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { clsx } from 'clsx';
 import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Heart, Calendar, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
+import useThemeStore from '@/store/useThemeStore';
 
 /**
- * Footer Component - Gothic Dark Medieval con soporte Dark/Light Mode
- * Footer con diseño gótico, mapa integrado y logo animado
+ * FooterBrandLogo - Componente de logo con flip idéntico al del Navbar
  */
-const Footer = ({ theme }) => {
-  const currentYear = new Date().getFullYear();
+const FooterBrandLogo = () => {
+  const theme = useThemeStore((state) => state.theme);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [displayTheme, setDisplayTheme] = useState(theme || 'dark');
+  const [displayTheme, setDisplayTheme] = useState(theme);
 
-  // Efecto de flip cuando cambia el tema
   useEffect(() => {
-    if (!theme) return;
-    
     setIsFlipping(true);
     const timer = setTimeout(() => {
       setDisplayTheme(theme);
       setIsFlipping(false);
     }, 400);
-
     return () => clearTimeout(timer);
   }, [theme]);
 
-  // Logos
   const darkLogo = '/logo-obsidian.png';
   const lightLogo = '/logo-zabina.jpg';
   const currentLogo = displayTheme === 'dark' ? darkLogo : lightLogo;
   const backLogo = displayTheme === 'dark' ? lightLogo : darkLogo;
 
-  // Nombres
   const darkName = 'OBSIDIAN';
   const lightName = 'ZABINA';
   const currentName = displayTheme === 'dark' ? darkName : lightName;
   const backName = displayTheme === 'dark' ? lightName : darkName;
+
+  return (
+    <div className={`flex items-center gap-2 sm:gap-3 group ${isFlipping ? 'brand-flipping' : ''}`}>
+      {/* Logo con flip 3D */}
+      <div className={`brand-logo-container ${isFlipping ? 'brand-logo-theme-flip' : ''}`}>
+        <div className={`brand-logo-inner ${isFlipping ? 'brand-logo-theme-flip-inner' : ''}`}>
+          {/* Frente */}
+          <div
+            className="brand-logo-front clip-path-gothic-md"
+            style={{
+              background: 'linear-gradient(to bottom right, #ffffff, #f5f5f5, #e0e0e0)',
+            }}
+          >
+            <Image
+              src={currentLogo}
+              alt="Logo Front"
+              className="object-contain p-1"
+              width={40}
+              height={40}
+            />
+          </div>
+          {/* Atrás */}
+          <div
+            className="brand-logo-back clip-path-gothic-md"
+            style={{
+              background: 'linear-gradient(to bottom right, #ffffff, #f5f5f5, #e0e0e0)',
+            }}
+          >
+            <Image
+              src={backLogo}
+              alt="Logo Back"
+              className="object-contain p-1"
+              width={40}
+              height={40}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Texto con animación de quemado */}
+      <div className="flex flex-col">
+        <div className={`brand-name-container ${isFlipping ? 'brand-name-theme-flip' : ''}`}>
+          <span className="brand-name">
+            {currentName}
+          </span>
+          <span className={`brand-name brand-name-back ${isFlipping ? 'brand-name-theme-flip-back' : ''}`}>
+            {backName}
+          </span>
+        </div>
+        <span className="brand-subtitle">
+          BEAUTY & STYLE
+        </span>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Footer Component - Gothic Dark Medieval con soporte Dark/Light Mode
+ */
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -101,61 +156,8 @@ const Footer = ({ theme }) => {
             {/* Brand & Info - 4 cols */}
             <div className="lg:col-span-4">
               {/* Logo con flip animado */}
-              <div className={`flex items-center gap-3 mb-6 ${isFlipping ? 'brand-flipping' : ''}`}>
-                {/* Logo con flip 3D */}
-                <div className={`brand-logo-container ${isFlipping ? 'brand-logo-theme-flip' : ''}`}>
-                  <div className={`brand-logo-inner ${isFlipping ? 'brand-logo-theme-flip-inner' : ''}`}>
-                    {/* Frente */}
-                    <div
-                      className="brand-logo-front clip-path-gothic-md"
-                      style={{
-                        background: 'linear-gradient(to bottom right, var(--color-gothic-chrome), var(--color-gothic-silver), var(--color-gothic-ash))',
-                        borderColor: 'var(--color-gothic-pewter)',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
-                      }}
-                    >
-                      <Image
-                        src={currentLogo}
-                        alt="Logo Front"
-                        className="object-contain p-1"
-                        width={40}
-                        height={40}
-                      />
-                    </div>
-                    {/* Atrás */}
-                    <div
-                      className="brand-logo-back clip-path-gothic-md"
-                      style={{
-                        background: 'linear-gradient(to bottom right, var(--color-gothic-chrome), var(--color-gothic-silver), var(--color-gothic-ash))',
-                        borderColor: 'var(--color-gothic-pewter)',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
-                      }}
-                    >
-                      <Image
-                        src={backLogo}
-                        alt="Logo Back"
-                        className="object-contain p-1"
-                        width={40}
-                        height={40}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Texto con animación de quemado */}
-                <div className="flex flex-col">
-                  <div className={`brand-name-container ${isFlipping ? 'brand-name-theme-flip' : ''}`}>
-                    <span className="brand-name">
-                      {currentName}
-                    </span>
-                    <span className={`brand-name brand-name-back ${isFlipping ? 'brand-name-theme-flip-back' : ''}`}>
-                      {backName}
-                    </span>
-                  </div>
-                  <span className="brand-subtitle">
-                    BEAUTY & STYLE
-                  </span>
-                </div>
+              <div className="mb-6">
+                <FooterBrandLogo />
               </div>
 
               <p 
@@ -345,7 +347,7 @@ const Footer = ({ theme }) => {
                   style={{ borderColor: 'var(--color-gothic-pewter)' }}
                 />
 
-                {/* Google Maps Iframe */}
+                {/* Google Maps Iframe - SIN grayscale */}
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d890.2285395808054!2d-65.14930727145226!3d-26.81086179853819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225f001532fc0f%3A0x3dfa068fd3ec01f9!2sZabina%20Nails!5e0!3m2!1ses-419!2sus!4v1768697504833!5m2!1ses-419!2sus"
                   width="100%"
@@ -354,7 +356,7 @@ const Footer = ({ theme }) => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="contrast-125 opacity-80"
+                  className="opacity-90"
                 />
               </div>
             </div>
