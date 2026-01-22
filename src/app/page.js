@@ -443,7 +443,7 @@ export default function HomePage() {
       
       <section 
         ref={heroRef}
-        className="relative h-screen overflow-hidden"
+        className="relative h-screen overflow-hidden min-h-[30vh]"
       >
         <div 
           ref={heroBgRef}
@@ -506,7 +506,7 @@ export default function HomePage() {
 
       <section 
         ref={servicesRef}
-        className="relative py-20 md:py-32 overflow-hidden"
+        className="relative py-20 md:py-32 overflow-hidden min-h-[100vh]"
       >
         <div className="absolute inset-0 overflow-hidden">
           <div 
@@ -517,8 +517,7 @@ export default function HomePage() {
               willChange: 'transform'
             }}
           >
-            <div className="absolute inset-0 section-gradient"></div>
-            <div className="absolute inset-0 bg-[var(--color-gothic-void)]/40"></div>
+            <div className="absolute inset-0 section-gradient"></div>            
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
@@ -578,7 +577,6 @@ export default function HomePage() {
             }}
           >
             <div className="absolute inset-0 section-gradient"></div>
-            <div className="absolute inset-0 bg-[var(--color-gothic-void)]/50"></div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
@@ -636,7 +634,6 @@ export default function HomePage() {
             }}
           >
             <div className="absolute inset-0 section-gradient"></div>
-            <div className="absolute inset-0 bg-[var(--color-gothic-void)]/45"></div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
@@ -676,8 +673,7 @@ export default function HomePage() {
               willChange: 'transform'
             }}
           >
-            <div className="absolute inset-0 stats-gradient"></div>
-            <div className="absolute inset-0 bg-[var(--color-gothic-void)]/55"></div>
+            <div className="absolute inset-0 section-gradient"></div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
@@ -742,7 +738,6 @@ export default function HomePage() {
             }}
           >
             <div className="absolute inset-0 cta-gradient"></div>
-            <div className="absolute inset-0 bg-[var(--color-gothic-void)]/48"></div>
           </div>
         </div>
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">

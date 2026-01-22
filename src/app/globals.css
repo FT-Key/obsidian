@@ -455,9 +455,11 @@ body {
 :root[data-theme="light"] .section-gradient {
   background: linear-gradient(
     to bottom, 
-    rgba(245, 245, 245, 0.9) 0%, 
-    rgba(245, 245, 245, 0.6) 50%, 
-    rgba(245, 245, 245, 0.9) 100%
+    var(--color-gothic-abyss) 0%, 
+    var(--color-gothic-abyss) 20%, 
+    rgba(245, 245, 245, 0) 50%, 
+    var(--color-gothic-abyss) 80%,
+    var(--color-gothic-abyss) 100%
   );
 }
 

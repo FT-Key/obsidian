@@ -300,8 +300,8 @@ const FavoritesPage = () => {
                       onAddToCart={() => handleMoveToCart(item)}
                       onWishlist={() => handleRemoveFavorite(item)}
                       onQuickView={() => router.push(`/productos/${productId}`)}
-                      isInFavorites={true}
-                      addedDate={item.added_at}
+                      /* isInFavorites={true}
+                      addedDate={item.added_at} */
                     />
                   </div>
                 );
