@@ -45,7 +45,7 @@ const useThemeStore = create((set, get) => ({
 
   // Getters computados
   get logoSrc() {
-    return get().theme === 'dark' ? '/logo-obsidian.png' : '/logo-zabina.jpg';
+    return get().theme === 'dark' ? '/logo-obsidian.jpg' : '/logo-zabina.jpg';
   },
 
   get brandName() {

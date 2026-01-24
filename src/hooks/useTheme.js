@@ -34,7 +34,7 @@ export const useTheme = () => {
     }
   };
 
-  const logoSrc = theme === 'dark' ? '/logo-obsidian.png' : '/logo-zabina.jpg';
+  const logoSrc = theme === 'dark' ? '/logo-obsidian.jpg' : '/logo-zabina.jpg';
   const brandName = theme === 'dark' ? 'OBSIDIAN' : 'ZABINA';
 
   return { theme, toggleTheme, logoSrc, brandName, isLoaded };

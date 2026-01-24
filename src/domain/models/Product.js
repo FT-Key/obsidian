@@ -57,9 +57,11 @@ const productSchema = new mongoose.Schema({
     min: 0,
     default: 0
   },
+  // models/Product.js
   main_image: {
     type: String,
-    default: null
+    required: [true, 'Main image is required'],
+    trim: true
   },
   images: [{
     type: String
@@ -84,7 +86,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Virtual to calculate total stock with variants
-productSchema.virtual('total_stock').get(function() {
+productSchema.virtual('total_stock').get(function () {
   if (this.variants && this.variants.length > 0) {
     return this.variants.reduce((total, v) => total + v.stock, 0);
   }

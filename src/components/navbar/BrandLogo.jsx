@@ -19,7 +19,7 @@ const BrandLogo = ({ onClick }) => {
     return () => clearTimeout(timer);
   }, [theme]);
 
-  const darkLogo = '/logo-obsidian.png';
+  const darkLogo = '/logo-obsidian.jpg';
   const lightLogo = '/logo-zabina.jpg';
   const currentLogo = displayTheme === 'dark' ? darkLogo : lightLogo;
   const backLogo = displayTheme === 'dark' ? lightLogo : darkLogo;
