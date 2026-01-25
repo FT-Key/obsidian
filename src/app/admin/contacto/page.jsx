@@ -1,7 +1,7 @@
 // ==========================================
 // 📁 app/admin/contact/page.jsx
 // ==========================================
-import ContactMessages from '@/components/admin/ContactMessages';
+/* import ContactMessages from '@/components/admin/ContactMessages'; */
 
 export const metadata = {
   title: 'Mensajes - Admin',
@@ -22,7 +22,7 @@ export default function ContactPage() {
         </div>
       </div>
       
-      <ContactMessages />
+     {/*  <ContactMessages /> */}
     </div>
   );
 }
