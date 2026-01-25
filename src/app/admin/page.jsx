@@ -1,8 +1,11 @@
+// ==========================================
+// 📁 app/admin/page.jsx (Dashboard)
+// ==========================================
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Package, Wrench, Tag, TrendingUp, Users, Eye, Plus, AlertCircle } from 'lucide-react';
+import { Package, Layers, Tag, TrendingUp, AlertCircle, Plus } from 'lucide-react';
 import { productService } from '@/lib/api/services/productService';
 import { categoryService } from '@/lib/api/services/categoryService';
 import { couponService } from '@/lib/api/services/couponService';
@@ -28,16 +31,15 @@ export default function AdminDashboard() {
       
       // Llamadas paralelas a todos los servicios
       const [productsRes, categoriesRes, couponsRes] = await Promise.all([
-        productService.getAll({ active: undefined }).catch(err => ({ data: { products: [] } })),
+        productService.getAll().catch(err => ({ data: { products: [] } })),
         categoryService.getAll().catch(err => ({ data: { categories: [] } })),
         couponService.getAll().catch(err => ({ data: { coupons: [] } }))
       ]);
 
-      console.log([productsRes, categoriesRes, couponsRes])
-
-      const products = productsRes.products || [];
-      const categories = categoriesRes.categories || [];
-      const coupons = couponsRes.coupons || [];
+      // Extraer datos correctamente según la estructura del backend
+      const products = productsRes?.products || [];
+      const categories = categoriesRes?.categories || [];
+      const coupons = couponsRes?.coupons || [];
 
       // Calcular estadísticas de productos
       const activeProducts = products.filter(p => p.active);
@@ -48,8 +50,12 @@ export default function AdminDashboard() {
       const activeCategories = categories.filter(c => c.active);
 
       // Calcular estadísticas de cupones
-      const activeCoupons = coupons.filter(c => c.active && new Date(c.expires_at) > new Date());
-      const usedCoupons = coupons.reduce((sum, c) => sum + (c.times_used || 0), 0);
+      const now = new Date();
+      const activeCoupons = coupons.filter(c => {
+        const endDate = new Date(c.end_date);
+        return c.active && endDate > now;
+      });
+      const usedCoupons = coupons.reduce((sum, c) => sum + (c.uses_count || 0), 0);
 
       setStats({
         productos: {
@@ -78,58 +84,91 @@ export default function AdminDashboard() {
       // Top 5 productos destacados
       setTopProducts(featuredProducts.slice(0, 5));
 
-      // Actividad reciente (simulada por ahora)
+      // Actividad reciente
       const activity = [];
       
       if (products.length > 0) {
-        const latestProduct = products[0];
-        activity.push({
-          action: 'Nuevo producto añadido',
-          item: latestProduct.name,
-          time: 'Reciente',
-          type: 'product'
-        });
+        // Ordenar por fecha de creación (más reciente primero)
+        const sortedProducts = [...products].sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        
+        if (sortedProducts[0]) {
+          activity.push({
+            action: 'Nuevo producto añadido',
+            item: sortedProducts[0].name,
+            time: getRelativeTime(sortedProducts[0].createdAt),
+            type: 'product'
+          });
+        }
       }
 
       if (outOfStock.length > 0) {
         activity.push({
-          action: 'Producto agotado',
+          action: 'Producto sin stock',
           item: outOfStock[0].name,
-          time: 'Hace 1 hora',
+          time: 'Requiere atención',
           type: 'alert'
         });
       }
 
       if (categories.length > 0) {
-        activity.push({
-          action: 'Categoría actualizada',
-          item: categories[0].name,
-          time: 'Hace 2 horas',
-          type: 'category'
-        });
+        const sortedCategories = [...categories].sort((a, b) => 
+          new Date(b.updatedAt) - new Date(a.updatedAt)
+        );
+        
+        if (sortedCategories[0]) {
+          activity.push({
+            action: 'Categoría actualizada',
+            item: sortedCategories[0].name,
+            time: getRelativeTime(sortedCategories[0].updatedAt),
+            type: 'category'
+          });
+        }
       }
 
       if (coupons.length > 0) {
-        activity.push({
-          action: 'Cupón creado',
-          item: coupons[0].code,
-          time: 'Hace 3 horas',
-          type: 'coupon'
-        });
+        const sortedCoupons = [...coupons].sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        
+        if (sortedCoupons[0]) {
+          activity.push({
+            action: 'Cupón creado',
+            item: sortedCoupons[0].code,
+            time: getRelativeTime(sortedCoupons[0].createdAt),
+            type: 'coupon'
+          });
+        }
       }
 
-      setRecentActivity(activity);
+      setRecentActivity(activity.slice(0, 5));
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-      setError(error.message);
+      setError('Error al cargar los datos del dashboard');
       setStats(prev => ({
-        ...prev,
         productos: { ...prev.productos, loading: false },
         categorias: { ...prev.categorias, loading: false },
         cupones: { ...prev.cupones, loading: false }
       }));
     }
+  };
+
+  const getRelativeTime = (date) => {
+    const now = new Date();
+    const then = new Date(date);
+    const diffMs = now - then;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Justo ahora';
+    if (diffMins < 60) return `Hace ${diffMins} min`;
+    if (diffHours < 24) return `Hace ${diffHours}h`;
+    if (diffDays === 1) return 'Ayer';
+    if (diffDays < 7) return `Hace ${diffDays} días`;
+    return then.toLocaleDateString('es-AR');
   };
 
   const statCards = [
@@ -148,7 +187,7 @@ export default function AdminDashboard() {
       value: stats.categorias.total,
       subtitle: `${stats.categorias.activas} activas`,
       change: stats.categorias.change,
-      icon: Wrench,
+      icon: Layers,
       color: 'from-green-600 to-green-800',
       loading: stats.categorias.loading,
       href: '/admin/categorias'
@@ -176,10 +215,10 @@ export default function AdminDashboard() {
   ];
 
   const quickActions = [
-    { label: 'Nuevo Producto', icon: Package, href: '/admin/productos/nuevo', color: 'blue' },
-    { label: 'Nueva Categoría', icon: Wrench, href: '/admin/categorias/nueva', color: 'green' },
-    { label: 'Nuevo Cupón', icon: Tag, href: '/admin/cupones/nuevo', color: 'purple' },
-    { label: 'Ver Analíticas', icon: TrendingUp, href: '/admin/analiticas', color: 'orange' }
+    { label: 'Nuevo Producto', icon: Package, href: '/admin/productos/nuevo', color: 'blue', enabled: true },
+    { label: 'Nueva Categoría', icon: Layers, href: '/admin/categories/nuevo', color: 'green', enabled: true },
+    { label: 'Nuevo Cupón', icon: Tag, href: '/admin/coupons/nuevo', color: 'purple', enabled: true },
+    { label: 'Ver Analíticas', icon: TrendingUp, href: '/admin/analiticas', color: 'orange', enabled: false }
   ];
 
   const getActivityColor = (type) => {
@@ -278,7 +317,13 @@ export default function AdminDashboard() {
             <div className="h-64 flex items-center justify-center bg-[var(--color-gothic-void)] rounded-lg border-2 border-dashed border-[var(--color-gothic-iron)]">
               <div className="text-center">
                 <Package size={48} className="text-[var(--color-gothic-ash)] mx-auto mb-3" />
-                <p className="text-[var(--color-gothic-smoke)] text-sm">No hay productos destacados</p>
+                <p className="text-[var(--color-gothic-smoke)] text-sm mb-2">No hay productos destacados</p>
+                <Link
+                  href="/admin/productos/nuevo"
+                  className="text-sm text-[var(--color-gothic-amethyst)] hover:text-[var(--color-gothic-plum)] transition-colors"
+                >
+                  Crear primer producto
+                </Link>
               </div>
             </div>
           ) : (
@@ -362,6 +407,22 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
+            
+            if (!action.enabled) {
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-[var(--color-gothic-iron)] rounded-lg opacity-50 cursor-not-allowed"
+                >
+                  <Icon size={24} className="text-[var(--color-gothic-ash)]" />
+                  <span className="text-sm font-medium text-[var(--color-gothic-smoke)] text-center">
+                    {action.label}
+                  </span>
+                  <span className="text-xs text-[var(--color-gothic-ash)]">Próximamente</span>
+                </div>
+              );
+            }
+            
             return (
               <Link
                 key={index}

@@ -1,8 +1,11 @@
+// ==========================================
+// 📁 components/admin/AdminSidebar.jsx
+// ==========================================
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Package, 
@@ -11,72 +14,93 @@ import {
   Settings,
   Users,
   BarChart3,
-  Image,
   ShoppingCart,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Home,
+  Ticket,
+  Layers
 } from 'lucide-react';
+import useAuthStore from '@/store/useAuthStore';
 
 export default function AdminSidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useAuthStore();
 
   const menuItems = [
     { 
       id: 'dashboard', 
       label: 'Dashboard', 
       icon: LayoutDashboard, 
-      href: '/admin' 
+      href: '/admin',
+      enabled: true
     },
     { 
       id: 'productos', 
       label: 'Productos', 
       icon: Package, 
-      href: '/admin/productos' 
+      href: '/admin/productos',
+      enabled: true
+    },
+    { 
+      id: 'categorias', 
+      label: 'Categorías', 
+      icon: Layers, 
+      href: '/admin/categories',
+      enabled: true
+    },
+    { 
+      id: 'cupones', 
+      label: 'Cupones', 
+      icon: Ticket, 
+      href: '/admin/coupons',
+      enabled: true
     },
     { 
       id: 'servicios', 
       label: 'Servicios', 
       icon: Wrench, 
-      href: '/admin/servicios' 
-    },
-    { 
-      id: 'contacto', 
-      label: 'Mensajes', 
-      icon: Mail, 
-      href: '/admin/contacto', 
-      badge: '18' 
+      href: '/admin/servicios',
+      enabled: false
     },
     { 
       id: 'pedidos', 
       label: 'Pedidos', 
       icon: ShoppingCart, 
-      href: '/admin/pedidos' 
+      href: '/admin/pedidos',
+      enabled: false
     },
     { 
-      id: 'multimedia', 
-      label: 'Multimedia', 
-      icon: Image, 
-      href: '/admin/multimedia' 
+      id: 'contacto', 
+      label: 'Mensajes', 
+      icon: Mail, 
+      href: '/admin/contacto',
+      enabled: false,
+      badge: '0'
     },
     { 
       id: 'usuarios', 
       label: 'Usuarios', 
       icon: Users, 
-      href: '/admin/usuarios' 
+      href: '/admin/usuarios',
+      enabled: false
     },
     { 
       id: 'analiticas', 
       label: 'Analíticas', 
       icon: BarChart3, 
-      href: '/admin/analiticas' 
+      href: '/admin/analiticas',
+      enabled: false
     },
     { 
       id: 'configuracion', 
       label: 'Configuración', 
       icon: Settings, 
-      href: '/admin/configuracion' 
+      href: '/admin/configuracion',
+      enabled: false
     },
   ];
 
@@ -85,6 +109,25 @@ export default function AdminSidebar() {
       return pathname === '/admin';
     }
     return pathname?.startsWith(href);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
+
+  const handleGoHome = () => {
+    router.push('/');
+  };
+
+  const getUserInitial = () => {
+    if (user?.name) {
+      return user.name.charAt(0).toUpperCase();
+    }
+    if (user?.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return 'A';
   };
 
   return (
@@ -106,11 +149,44 @@ export default function AdminSidebar() {
         </button>
       </div>
 
+      {/* Ir a Inicio */}
+      <div className="px-4 pt-4">
+        <button
+          onClick={handleGoHome}
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all bg-[var(--color-gothic-shadow)] hover:bg-[var(--color-gothic-steel)] text-[var(--color-gothic-silver)]`}
+        >
+          <Home size={20} />
+          {sidebarOpen && (
+            <span className="flex-1 text-left font-medium">Ir a Inicio</span>
+          )}
+        </button>
+      </div>
+
       {/* Navegación */}
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
+          
+          if (!item.enabled) {
+            return (
+              <div
+                key={item.id}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg opacity-50 cursor-not-allowed text-[var(--color-gothic-ash)]"
+                title="Próximamente"
+              >
+                <Icon size={20} />
+                {sidebarOpen && (
+                  <>
+                    <span className="flex-1 text-left font-medium">{item.label}</span>
+                    <span className="text-xs bg-[var(--color-gothic-steel)] px-2 py-1 rounded">
+                      Próximo
+                    </span>
+                  </>
+                )}
+              </div>
+            );
+          }
           
           return (
             <Link
@@ -139,17 +215,40 @@ export default function AdminSidebar() {
       </nav>
 
       {/* User section */}
-      {sidebarOpen && (
+      {sidebarOpen ? (
+        <div className="p-4 border-t border-[var(--color-gothic-iron)] space-y-2">
+          <div className="px-4 py-3 rounded-lg bg-[var(--color-gothic-shadow)]">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-gothic-amethyst)] to-[var(--color-gothic-plum)] rounded-full flex items-center justify-center font-bold text-white">
+                {getUserInitial()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[var(--color-gothic-chrome)] truncate">
+                  {user?.name || 'Admin'}
+                </p>
+                <p className="text-xs text-[var(--color-gothic-smoke)] truncate">
+                  {user?.email || 'admin@obsidian.com'}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-900/20 text-red-400 transition-colors"
+          >
+            <LogOut size={18} />
+            <span className="font-medium">Cerrar Sesión</span>
+          </button>
+        </div>
+      ) : (
         <div className="p-4 border-t border-[var(--color-gothic-iron)]">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[var(--color-gothic-shadow)] transition-colors">
-            <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-gothic-amethyst)] to-[var(--color-gothic-plum)] rounded-full flex items-center justify-center font-bold">
-              A
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-sm font-medium text-[var(--color-gothic-chrome)]">Admin</p>
-              <p className="text-xs text-[var(--color-gothic-smoke)]">admin@obsidian.com</p>
-            </div>
-            <LogOut size={18} className="text-[var(--color-gothic-ash)]" />
+          <button 
+            onClick={handleLogout}
+            className="w-full p-3 rounded-lg hover:bg-red-900/20 text-red-400 transition-colors"
+            title="Cerrar Sesión"
+          >
+            <LogOut size={20} className="mx-auto" />
           </button>
         </div>
       )}
