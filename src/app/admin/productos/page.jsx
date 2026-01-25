@@ -1,15 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Search, Edit, Trash2, Eye, Package, Loader2, AlertCircle } from 'lucide-react';
+import { Edit, Trash2, Eye, Package } from 'lucide-react';
+import PageHeader from '@/components/admin/shared/PageHeader';
+import SearchBar from '@/components/admin/shared/SearchBar';
+import LoadingSpinner from '@/components/admin/shared/LoadingSpinner';
+import ErrorAlert from '@/components/admin/shared/ErrorAlert';
+import EmptyState from '@/components/admin/shared/EmptyState';
+import Badge from '@/components/admin/shared/Badge';
+import ConfirmDialog from '@/components/admin/shared/ConfirmDialog';
 
-export default function AdminProductsPage() {
+export default function AdminProductosPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
+  const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, productId: null });
 
   useEffect(() => {
     fetchProducts();
@@ -23,28 +31,13 @@ export default function AdminProductsPage() {
       const params = new URLSearchParams();
       if (category !== 'all') params.append('category', category);
       
-      console.log('Fetching from:', `/api/products?${params}`);
-      
       const response = await fetch(`/api/products?${params}`);
       
-      console.log('Response status:', response.status);
-      
       if (!response.ok) {
-        const text = await response.text();
-        console.error('Error response:', text);
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
       
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        console.error('Not JSON response:', text);
-        throw new Error('La respuesta del servidor no es JSON válido');
-      }
-      
       const data = await response.json();
-      console.log('Products data:', data);
-      
       setProducts(Array.isArray(data.products) ? data.products : []);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -56,8 +49,6 @@ export default function AdminProductsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
-
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE'
@@ -65,13 +56,13 @@ export default function AdminProductsPage() {
 
       if (response.ok) {
         setProducts(products.filter(p => p._id !== id));
-        alert('Producto eliminado correctamente');
+        // TODO: Mostrar toast de éxito
       } else {
         throw new Error('Error al eliminar producto');
       }
     } catch (error) {
       console.error('Error deleting product:', error);
-      alert('Error al eliminar producto: ' + error.message);
+      // TODO: Mostrar toast de error
     }
   };
 
@@ -81,100 +72,66 @@ export default function AdminProductsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--color-gothic-abyss)] text-[var(--color-gothic-silver)] p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-4xl font-black mb-2" style={{ color: 'var(--color-gothic-pearl)' }}>
-              Productos
-            </h1>
-            <p className="text-[var(--color-gothic-smoke)]">
-              Gestiona tu catálogo de productos
-            </p>
-          </div>
+    <div className="max-w-7xl mx-auto">
+      {/* Header */}
+      <PageHeader
+        title="Productos"
+        description="Gestiona tu catálogo de productos"
+        actionLabel="Nuevo Producto"
+        actionHref="/admin/productos/nuevo"
+      />
 
-          <Link
-            href="/admin/products/new"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-[var(--color-gothic-amethyst)] to-[var(--color-gothic-plum)] text-white font-semibold rounded-lg hover:scale-105 transition-transform"
-          >
-            <Plus className="w-5 h-5" />
-            Nuevo Producto
-          </Link>
-        </div>
+      {/* Error Alert */}
+      {error && (
+        <ErrorAlert
+          title="Error al cargar productos"
+          message={error}
+          onRetry={fetchProducts}
+        />
+      )}
 
-        {/* Error Alert */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-900/20 border border-red-500 rounded-lg flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <h3 className="font-bold text-red-300 mb-1">Error al cargar productos</h3>
-              <p className="text-sm text-red-200 mb-2">{error}</p>
-              <button
-                onClick={fetchProducts}
-                className="text-sm font-semibold underline text-red-300 hover:text-red-200 transition-colors"
-              >
-                Reintentar
-              </button>
-            </div>
-          </div>
-        )}
+      {/* Filters */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Buscar productos..."
+        />
 
-        {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-gothic-smoke)]" />
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-[var(--color-gothic-shadow)] border border-[var(--color-gothic-iron)] rounded-lg text-[var(--color-gothic-silver)] placeholder:text-[var(--color-gothic-ash)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gothic-amethyst)]"
-            />
-          </div>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="px-4 py-3 bg-[var(--color-gothic-shadow)] border border-[var(--color-gothic-iron)] rounded-lg text-[var(--color-gothic-silver)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gothic-amethyst)]"
+        >
+          <option value="all">Todas las categorías</option>
+          <option value="ropa">Ropa</option>
+          <option value="accesorios">Accesorios</option>
+          <option value="calzado">Calzado</option>
+        </select>
+      </div>
 
-          {/* Category Filter */}
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="px-4 py-3 bg-[var(--color-gothic-shadow)] border border-[var(--color-gothic-iron)] rounded-lg text-[var(--color-gothic-silver)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gothic-amethyst)]"
-          >
-            <option value="all">Todas las categorías</option>
-            <option value="ropa">Ropa</option>
-            <option value="accesorios">Accesorios</option>
-            <option value="calzado">Calzado</option>
-          </select>
-        </div>
+      {/* Loading */}
+      {loading && <LoadingSpinner message="Cargando productos..." />}
 
-        {/* Loading */}
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-[var(--color-gothic-amethyst)]" />
-          </div>
-        )}
+      {/* Empty State */}
+      {!loading && !error && filteredProducts.length === 0 && (
+        <EmptyState
+          icon={Package}
+          title={searchTerm ? 'No se encontraron resultados' : 'No hay productos'}
+          description={
+            searchTerm 
+              ? 'Intenta con otros términos de búsqueda' 
+              : 'Comienza agregando tu primer producto'
+          }
+          actionLabel="Crear Producto"
+          actionHref="/admin/productos/nuevo"
+          showAction={!searchTerm}
+        />
+      )}
 
-        {/* Products Grid */}
-        {!loading && !error && filteredProducts.length === 0 && (
-          <div className="text-center py-20">
-            <Package className="w-16 h-16 mx-auto mb-4 text-[var(--color-gothic-ash)]" />
-            <h3 className="text-xl font-bold mb-2">No hay productos</h3>
-            <p className="text-[var(--color-gothic-smoke)] mb-6">
-              {searchTerm ? 'No se encontraron resultados' : 'Comienza agregando tu primer producto'}
-            </p>
-            {!searchTerm && (
-              <Link
-                href="/admin/products/new"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-gothic-steel)] text-white font-semibold rounded-lg hover:bg-[var(--color-gothic-gunmetal)] transition-colors"
-              >
-                <Plus className="w-5 h-5" />
-                Crear Producto
-              </Link>
-            )}
-          </div>
-        )}
-
-        {!loading && !error && filteredProducts.length > 0 && (
+      {/* Products Grid */}
+      {!loading && !error && filteredProducts.length > 0 && (
+        <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
               <div
@@ -195,25 +152,16 @@ export default function AdminProductsPage() {
                     </div>
                   )}
                   
-                  {/* Stock Badge */}
-                  <div className="absolute top-2 right-2">
-                    <span
-                      className={`px-2 py-1 text-xs font-bold rounded ${
-                        product.stock > 0
-                          ? 'bg-green-900/80 text-green-300'
-                          : 'bg-red-900/80 text-red-300'
-                      }`}
-                    >
+                  {/* Badges */}
+                  <div className="absolute top-2 right-2 flex flex-col gap-2">
+                    <Badge variant={product.stock > 0 ? 'success' : 'danger'}>
                       {product.stock > 0 ? `Stock: ${product.stock}` : 'Sin stock'}
-                    </span>
+                    </Badge>
                   </div>
 
-                  {/* Featured Badge */}
                   {product.featured && (
                     <div className="absolute top-2 left-2">
-                      <span className="px-2 py-1 text-xs font-bold rounded bg-purple-900/80 text-purple-300">
-                        Destacado
-                      </span>
+                      <Badge variant="purple">Destacado</Badge>
                     </div>
                   )}
                 </div>
@@ -232,19 +180,15 @@ export default function AdminProductsPage() {
                     <span className="text-2xl font-bold text-[var(--color-gothic-amethyst)]">
                       ${product.price?.toLocaleString() || '0'}
                     </span>
-                    <span className={`px-2 py-1 text-xs rounded ${
-                      product.active
-                        ? 'bg-green-900/30 text-green-400'
-                        : 'bg-gray-800 text-gray-400'
-                    }`}>
+                    <Badge variant={product.active ? 'success' : 'default'}>
                       {product.active ? 'Activo' : 'Inactivo'}
-                    </span>
+                    </Badge>
                   </div>
 
                   {/* Actions */}
                   <div className="flex gap-2">
                     <button
-                      onClick={() => window.open(`/products/${product._id}`, '_blank')}
+                      onClick={() => window.open(`/productos/${product._id}`, '_blank')}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[var(--color-gothic-iron)] hover:bg-[var(--color-gothic-steel)] text-[var(--color-gothic-silver)] rounded transition-colors"
                       title="Ver"
                     >
@@ -252,7 +196,7 @@ export default function AdminProductsPage() {
                     </button>
 
                     <Link
-                      href={`/admin/products/${product._id}/edit`}
+                      href={`/admin/productos/${product._id}/editar`}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[var(--color-gothic-amethyst)] hover:bg-[var(--color-gothic-plum)] text-white rounded transition-colors"
                       title="Editar"
                     >
@@ -260,7 +204,7 @@ export default function AdminProductsPage() {
                     </Link>
 
                     <button
-                      onClick={() => handleDelete(product._id)}
+                      onClick={() => setDeleteDialog({ isOpen: true, productId: product._id })}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-900 hover:bg-red-800 text-white rounded transition-colors"
                       title="Eliminar"
                     >
@@ -271,10 +215,8 @@ export default function AdminProductsPage() {
               </div>
             ))}
           </div>
-        )}
 
-        {/* Stats */}
-        {!loading && !error && filteredProducts.length > 0 && (
+          {/* Stats */}
           <div className="mt-8 p-4 bg-[var(--color-gothic-shadow)] border border-[var(--color-gothic-iron)] rounded-lg">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
@@ -311,8 +253,20 @@ export default function AdminProductsPage() {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </>
+      )}
+
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        isOpen={deleteDialog.isOpen}
+        onClose={() => setDeleteDialog({ isOpen: false, productId: null })}
+        onConfirm={() => handleDelete(deleteDialog.productId)}
+        title="¿Eliminar producto?"
+        message="Esta acción no se puede deshacer. El producto y sus imágenes se eliminarán permanentemente."
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        variant="danger"
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import Product from '@/domain/models/Product';
 import Category from '@/domain/models/Category';
+import { deleteImageServer } from '@/lib/firebase/storage';
 import mongoose from 'mongoose';
 
 class ProductService {
@@ -150,11 +151,18 @@ class ProductService {
   }
 
   /**
-   * Actualizar un producto
+   * Actualizar un producto con manejo automático de imágenes
    */
   async updateProduct(productId, updateData) {
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       throw new Error('ID de producto inválido');
+    }
+
+    // Obtener el producto actual
+    const product = await Product.findById(productId);
+    
+    if (!product) {
+      throw new Error('Producto no encontrado');
     }
 
     // Si se actualiza la categoría, verificar que existe
@@ -165,55 +173,148 @@ class ProductService {
       }
     }
 
-    const product = await Product.findByIdAndUpdate(
+    // Guardar las imágenes antiguas para eliminar después
+    const oldMainImage = product.main_image;
+    const oldImages = product.images || [];
+
+    // Detectar qué imágenes se eliminaron
+    const imagesToDelete = [];
+
+    // Si cambió la imagen principal, eliminar la antigua
+    if (updateData.main_image && oldMainImage && updateData.main_image !== oldMainImage) {
+      imagesToDelete.push(oldMainImage);
+    }
+
+    // Detectar imágenes adicionales eliminadas
+    if (updateData.images) {
+      const newImages = updateData.images || [];
+      oldImages.forEach(oldImage => {
+        if (!newImages.includes(oldImage)) {
+          imagesToDelete.push(oldImage);
+        }
+      });
+    }
+
+    // Actualizar el producto
+    const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       { $set: updateData },
       { new: true, runValidators: true }
     ).populate('category');
 
-    if (!product) {
+    if (!updatedProduct) {
       throw new Error('Producto no encontrado');
     }
 
-    return product;
+    // Eliminar imágenes antiguas en segundo plano (no bloquear la respuesta)
+    if (imagesToDelete.length > 0) {
+      this.deleteImagesInBackground(imagesToDelete);
+    }
+
+    return updatedProduct;
   }
 
   /**
-   * Eliminar un producto (soft delete)
+   * Eliminar un producto (soft delete) con limpieza de imágenes
    */
   async deleteProduct(productId) {
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       throw new Error('ID de producto inválido');
     }
 
-    const product = await Product.findByIdAndUpdate(
+    const product = await Product.findById(productId);
+    
+    if (!product) {
+      throw new Error('Producto no encontrado');
+    }
+
+    // Recopilar todas las imágenes para eliminar
+    const imagesToDelete = [];
+    
+    if (product.main_image) {
+      imagesToDelete.push(product.main_image);
+    }
+    
+    if (product.images && product.images.length > 0) {
+      imagesToDelete.push(...product.images);
+    }
+
+    // Soft delete: desactivar el producto
+    await Product.findByIdAndUpdate(
       productId,
       { $set: { active: false } },
       { new: true }
     );
 
-    if (!product) {
-      throw new Error('Producto no encontrado');
+    // Eliminar imágenes en segundo plano
+    if (imagesToDelete.length > 0) {
+      this.deleteImagesInBackground(imagesToDelete);
     }
 
-    return { success: true, message: 'Producto desactivado correctamente' };
+    return { 
+      success: true, 
+      message: 'Producto desactivado correctamente',
+      deletedImages: imagesToDelete.length
+    };
   }
 
   /**
-   * Eliminar permanentemente un producto
+   * Eliminar permanentemente un producto con sus imágenes
    */
   async permanentDeleteProduct(productId) {
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       throw new Error('ID de producto inválido');
     }
 
-    const product = await Product.findByIdAndDelete(productId);
-
+    const product = await Product.findById(productId);
+    
     if (!product) {
       throw new Error('Producto no encontrado');
     }
 
-    return { success: true, message: 'Producto eliminado permanentemente' };
+    // Recopilar todas las imágenes para eliminar
+    const imagesToDelete = [];
+    
+    if (product.main_image) {
+      imagesToDelete.push(product.main_image);
+    }
+    
+    if (product.images && product.images.length > 0) {
+      imagesToDelete.push(...product.images);
+    }
+
+    // Eliminar el producto de la BD
+    await Product.findByIdAndDelete(productId);
+
+    // Eliminar imágenes en segundo plano
+    if (imagesToDelete.length > 0) {
+      this.deleteImagesInBackground(imagesToDelete);
+    }
+
+    return { 
+      success: true, 
+      message: 'Producto eliminado permanentemente',
+      deletedImages: imagesToDelete.length
+    };
+  }
+
+  /**
+   * Eliminar imágenes en segundo plano
+   * No bloquea la respuesta al cliente
+   */
+  async deleteImagesInBackground(imageUrls) {
+    // Ejecutar en el siguiente tick para no bloquear
+    setImmediate(async () => {
+      for (const url of imageUrls) {
+        try {
+          await deleteImageServer(url);
+          console.log(`✅ Imagen eliminada: ${url}`);
+        } catch (error) {
+          console.error(`❌ Error eliminando imagen ${url}:`, error.message);
+          // No lanzar error, solo registrar
+        }
+      }
+    });
   }
 
   /**

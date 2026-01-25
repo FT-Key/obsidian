@@ -14,14 +14,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      // Agrega aquí otros dominios que necesites
-      // Por ejemplo, si usas tu propio CDN:
-      // {
-      //   protocol: 'https',
-      //   hostname: 'tu-dominio.com',
-      //   port: '',
-      //   pathname: '/images/**',
-      // },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     // Configuración opcional para optimización
     formats: ['image/webp', 'image/avif'],

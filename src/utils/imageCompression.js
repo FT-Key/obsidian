@@ -39,6 +39,11 @@ const QUALITY_PRESETS = {
  */
 export async function compressImage(buffer, preset = 'large', customOptions = {}) {
   try {
+    // Validar buffer
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     const config = QUALITY_PRESETS[preset] || QUALITY_PRESETS.large;
     const options = { ...config, ...customOptions };
 
@@ -66,10 +71,12 @@ export async function compressImage(buffer, preset = 'large', customOptions = {}
       })
       .toBuffer();
 
+    console.log(`✅ Imagen comprimida: ${buffer.length} bytes -> ${compressed.length} bytes (${Math.round((1 - compressed.length / buffer.length) * 100)}% reducción)`);
+
     return compressed;
 
   } catch (error) {
-    console.error('Error compressing image:', error);
+    console.error('❌ Error compressing image:', error);
     throw new Error(`Image compression failed: ${error.message}`);
   }
 }
@@ -81,6 +88,10 @@ export async function compressImage(buffer, preset = 'large', customOptions = {}
  */
 export async function generateImageVersions(buffer) {
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     const [thumbnail, medium, large] = await Promise.all([
       compressImage(buffer, 'thumbnail'),
       compressImage(buffer, 'medium'),
@@ -94,11 +105,12 @@ export async function generateImageVersions(buffer) {
       sizes: {
         thumbnail: thumbnail.length,
         medium: medium.length,
-        large: large.length
+        large: large.length,
+        total: thumbnail.length + medium.length + large.length
       }
     };
   } catch (error) {
-    console.error('Error generating image versions:', error);
+    console.error('❌ Error generating image versions:', error);
     throw error;
   }
 }
@@ -119,6 +131,10 @@ export async function compressToJPEG(buffer, options = {}) {
   const finalOptions = { ...defaultOptions, ...options };
 
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     return await sharp(buffer)
       .rotate() // Auto-rotar
       .resize(finalOptions.width, null, {
@@ -133,7 +149,7 @@ export async function compressToJPEG(buffer, options = {}) {
       })
       .toBuffer();
   } catch (error) {
-    console.error('Error compressing to JPEG:', error);
+    console.error('❌ Error compressing to JPEG:', error);
     throw error;
   }
 }
@@ -153,6 +169,10 @@ export async function compressPNG(buffer, options = {}) {
   const finalOptions = { ...defaultOptions, ...options };
 
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     return await sharp(buffer)
       .rotate()
       .resize(finalOptions.width, null, {
@@ -167,7 +187,7 @@ export async function compressPNG(buffer, options = {}) {
       })
       .toBuffer();
   } catch (error) {
-    console.error('Error compressing PNG:', error);
+    console.error('❌ Error compressing PNG:', error);
     throw error;
   }
 }
@@ -176,28 +196,56 @@ export async function compressPNG(buffer, options = {}) {
  * Detecta y optimiza según el formato original
  * @param {Buffer} buffer - Buffer de la imagen
  * @param {object} options - Opciones
- * @returns {Promise<{buffer: Buffer, format: string}>}
+ * @returns {Promise<{buffer: Buffer, format: string, metadata: Object}>}
  */
 export async function smartCompress(buffer, options = {}) {
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     const metadata = await sharp(buffer).metadata();
     
     let compressed;
     let format;
 
-    // Si tiene transparencia, usar PNG o WebP
+    // Si tiene transparencia, usar PNG o WebP con alpha
     if (metadata.hasAlpha) {
-      compressed = await compressPNG(buffer, options);
-      format = 'png';
+      // WebP soporta transparencia y es más eficiente que PNG
+      compressed = await sharp(buffer)
+        .rotate()
+        .resize(options.width || 1920, options.height || 1920, {
+          fit: 'inside',
+          withoutEnlargement: true
+        })
+        .webp({
+          quality: options.quality || 85,
+          alphaQuality: 100, // Mantener calidad del canal alpha
+          effort: 6
+        })
+        .toBuffer();
+      format = 'webp';
     } else {
       // Sin transparencia, usar WebP (mejor que JPEG)
-      compressed = await compressImage(buffer, 'large', options);
+      compressed = await compressImage(buffer, options.preset || 'large', options);
       format = 'webp';
     }
 
-    return { buffer: compressed, format };
+    return { 
+      buffer: compressed, 
+      format,
+      metadata: {
+        originalSize: buffer.length,
+        compressedSize: compressed.length,
+        reduction: Math.round((1 - compressed.length / buffer.length) * 100),
+        dimensions: {
+          width: metadata.width,
+          height: metadata.height
+        }
+      }
+    };
   } catch (error) {
-    console.error('Error in smart compress:', error);
+    console.error('❌ Error in smart compress:', error);
     throw error;
   }
 }
@@ -209,6 +257,10 @@ export async function smartCompress(buffer, options = {}) {
  */
 export async function getImageInfo(buffer) {
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     const metadata = await sharp(buffer).metadata();
     return {
       width: metadata.width,
@@ -216,10 +268,13 @@ export async function getImageInfo(buffer) {
       format: metadata.format,
       size: buffer.length,
       hasAlpha: metadata.hasAlpha,
-      orientation: metadata.orientation
+      orientation: metadata.orientation,
+      space: metadata.space,
+      channels: metadata.channels,
+      depth: metadata.depth
     };
   } catch (error) {
-    console.error('Error getting image info:', error);
+    console.error('❌ Error getting image info:', error);
     throw error;
   }
 }
@@ -231,6 +286,9 @@ export async function getImageInfo(buffer) {
  */
 export async function isValidImageBuffer(buffer) {
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      return false;
+    }
     await sharp(buffer).metadata();
     return true;
   } catch {
@@ -242,19 +300,33 @@ export async function isValidImageBuffer(buffer) {
  * Añade marca de agua a la imagen
  * @param {Buffer} buffer - Buffer de la imagen
  * @param {string} watermarkText - Texto de la marca de agua
+ * @param {object} options - Opciones de marca de agua
  * @returns {Promise<Buffer>}
  */
-export async function addWatermark(buffer, watermarkText = 'Obsidian') {
+export async function addWatermark(buffer, watermarkText = 'Obsidian', options = {}) {
   try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
     const metadata = await sharp(buffer).metadata();
+    
+    const defaultOptions = {
+      opacity: 0.3,
+      fontSize: Math.floor(metadata.width / 20),
+      position: 'southeast', // 'southeast', 'southwest', 'northeast', 'northwest', 'center'
+      color: 'white'
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
     
     // Crear SVG con texto
     const svgText = `
       <svg width="${metadata.width}" height="${metadata.height}">
         <style>
           .watermark { 
-            fill: rgba(255, 255, 255, 0.3); 
-            font-size: ${Math.floor(metadata.width / 20)}px;
+            fill: ${finalOptions.color === 'white' ? `rgba(255, 255, 255, ${finalOptions.opacity})` : `rgba(0, 0, 0, ${finalOptions.opacity})`}; 
+            font-size: ${finalOptions.fontSize}px;
             font-family: Arial, sans-serif;
             font-weight: bold;
           }
@@ -271,11 +343,64 @@ export async function addWatermark(buffer, watermarkText = 'Obsidian') {
     return await sharp(buffer)
       .composite([{
         input: Buffer.from(svgText),
-        gravity: 'southeast'
+        gravity: finalOptions.position
       }])
       .toBuffer();
   } catch (error) {
-    console.error('Error adding watermark:', error);
+    console.error('❌ Error adding watermark:', error);
+    throw error;
+  }
+}
+
+/**
+ * Recorta una imagen según coordenadas
+ * @param {Buffer} buffer - Buffer de la imagen
+ * @param {Object} cropData - { left, top, width, height }
+ * @returns {Promise<Buffer>}
+ */
+export async function cropImage(buffer, cropData) {
+  try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
+    const { left, top, width, height } = cropData;
+
+    return await sharp(buffer)
+      .extract({ left, top, width, height })
+      .toBuffer();
+  } catch (error) {
+    console.error('❌ Error cropping image:', error);
+    throw error;
+  }
+}
+
+/**
+ * Convierte imagen a base64
+ * @param {Buffer} buffer - Buffer de la imagen
+ * @param {string} format - Formato de salida ('webp', 'jpeg', 'png')
+ * @returns {Promise<string>}
+ */
+export async function toBase64(buffer, format = 'webp') {
+  try {
+    if (!Buffer.isBuffer(buffer)) {
+      throw new Error('Invalid buffer provided');
+    }
+
+    let processed = sharp(buffer);
+
+    if (format === 'webp') {
+      processed = processed.webp({ quality: 85 });
+    } else if (format === 'jpeg') {
+      processed = processed.jpeg({ quality: 85 });
+    } else if (format === 'png') {
+      processed = processed.png({ quality: 85 });
+    }
+
+    const resultBuffer = await processed.toBuffer();
+    return `data:image/${format};base64,${resultBuffer.toString('base64')}`;
+  } catch (error) {
+    console.error('❌ Error converting to base64:', error);
     throw error;
   }
 }

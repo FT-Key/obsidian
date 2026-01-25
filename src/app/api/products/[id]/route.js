@@ -27,6 +27,7 @@ export async function GET(request, { params }) {
 /**
  * PUT /api/products/[id]
  * Actualizar un producto (solo admin)
+ * Elimina automáticamente las imágenes antiguas que ya no se usan
  */
 export async function PUT(request, { params }) {
   try {
@@ -41,9 +42,16 @@ export async function PUT(request, { params }) {
     //   return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     // }
 
+    // El servicio se encarga de eliminar las imágenes antiguas
     const product = await productService.updateProduct(id, body);
 
-    return NextResponse.json(product, { status: 200 });
+    return NextResponse.json(
+      { 
+        ...product.toObject(),
+        message: 'Producto actualizado exitosamente. Las imágenes antiguas se eliminarán automáticamente.'
+      }, 
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Error updating product:', error);
     return NextResponse.json(
@@ -56,6 +64,7 @@ export async function PUT(request, { params }) {
 /**
  * DELETE /api/products/[id]
  * Eliminar un producto (solo admin)
+ * Elimina automáticamente todas las imágenes asociadas
  */
 export async function DELETE(request, { params }) {
   try {
@@ -69,9 +78,16 @@ export async function DELETE(request, { params }) {
     //   return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     // }
 
+    // El servicio se encarga de eliminar todas las imágenes
     const result = await productService.deleteProduct(id);
 
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json(
+      { 
+        ...result,
+        message: `Producto eliminado exitosamente. ${result.deletedImages} imágenes se eliminarán automáticamente.`
+      }, 
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Error deleting product:', error);
     return NextResponse.json(
@@ -80,4 +96,3 @@ export async function DELETE(request, { params }) {
     );
   }
 }
-
