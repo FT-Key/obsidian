@@ -49,14 +49,14 @@ export default function AdminSidebar() {
       id: 'categorias', 
       label: 'Categorías', 
       icon: Layers, 
-      href: '/admin/categories',
+      href: '/admin/categorias',
       enabled: true
     },
     { 
       id: 'cupones', 
       label: 'Cupones', 
       icon: Ticket, 
-      href: '/admin/coupons',
+      href: '/admin/cupones',
       enabled: true
     },
     { 
@@ -64,7 +64,7 @@ export default function AdminSidebar() {
       label: 'Servicios', 
       icon: Wrench, 
       href: '/admin/servicios',
-      enabled: false
+      enabled: true
     },
     { 
       id: 'pedidos', 

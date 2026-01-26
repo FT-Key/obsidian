@@ -1,14 +1,24 @@
 'use client';
 
-import clsx from 'clsx';
+import React, { useState } from 'react';
+import { clsx } from 'clsx';
+import { Moon, Sun } from 'lucide-react';
 
 export default function Pagination({
-  page,
-  totalPages,
-  onPageChange,
+  page = 1,
+  totalPages = 10,
+  onPageChange = (p) => console.log('Page:', p),
   maxVisiblePages = 5,
   className = ''
 }) {
+  const [theme, setTheme] = useState('dark');
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
   if (!totalPages || totalPages <= 1) return null;
 
   const half = Math.floor(maxVisiblePages / 2);
@@ -26,61 +36,74 @@ export default function Pagination({
   }
 
   return (
-    <nav className={clsx('flex items-center justify-center gap-2 mt-8', className)}>
-      {/* Anterior */}
+    <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Toggle Theme Button */}
       <button
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
-        className={clsx(
-          baseBtn,
-          page === 1 && disabledBtn
-        )}
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-[var(--color-gothic-obsidian)] border border-[var(--color-gothic-gunmetal)] rounded-lg flex items-center justify-center text-[var(--color-gothic-chrome)] hover:text-[var(--color-gothic-pearl)] hover:border-[var(--color-gothic-amethyst)] transition-all duration-300 hover:scale-110 shadow-lg"
+        aria-label="Toggle theme"
       >
-        Anterior
+        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
       </button>
 
-      {/* Primera página */}
-      {start > 1 && (
-        <>
-          <PageButton page={1} current={page} onClick={onPageChange} />
-          {start > 2 && <span className="px-2 text-gray-500">…</span>}
-        </>
-      )}
+      <nav className={clsx('flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-8', className)}>
+        {/* Anterior */}
+        <button
+          onClick={() => onPageChange(page - 1)}
+          disabled={page === 1}
+          className={clsx(
+            baseBtn,
+            page === 1 && disabledBtn
+          )}
+        >
+          <span className="hidden sm:inline">Anterior</span>
+          <span className="sm:hidden">Ant</span>
+        </button>
 
-      {/* Páginas visibles */}
-      {pages.map((p) => (
-        <PageButton
-          key={p}
-          page={p}
-          current={page}
-          onClick={onPageChange}
-        />
-      ))}
+        {/* Primera página */}
+        {start > 1 && (
+          <>
+            <PageButton page={1} current={page} onClick={onPageChange} />
+            {start > 2 && <span className="px-1 sm:px-2 text-[var(--color-gothic-pewter)] text-sm">…</span>}
+          </>
+        )}
 
-      {/* Última página */}
-      {end < totalPages && (
-        <>
-          {end < totalPages - 1 && <span className="px-2 text-gray-500">…</span>}
+        {/* Páginas visibles */}
+        {pages.map((p) => (
           <PageButton
-            page={totalPages}
+            key={p}
+            page={p}
             current={page}
             onClick={onPageChange}
           />
-        </>
-      )}
+        ))}
 
-      {/* Siguiente */}
-      <button
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
-        className={clsx(
-          baseBtn,
-          page === totalPages && disabledBtn
+        {/* Última página */}
+        {end < totalPages && (
+          <>
+            {end < totalPages - 1 && <span className="px-1 sm:px-2 text-[var(--color-gothic-pewter)] text-sm">…</span>}
+            <PageButton
+              page={totalPages}
+              current={page}
+              onClick={onPageChange}
+            />
+          </>
         )}
-      >
-        Siguiente
-      </button>
-    </nav>
+
+        {/* Siguiente */}
+        <button
+          onClick={() => onPageChange(page + 1)}
+          disabled={page === totalPages}
+          className={clsx(
+            baseBtn,
+            page === totalPages && disabledBtn
+          )}
+        >
+          <span className="hidden sm:inline">Siguiente</span>
+          <span className="sm:hidden">Sig</span>
+        </button>
+      </nav>
+    </div>
   );
 }
 
@@ -95,8 +118,8 @@ function PageButton({ page, current, onClick }) {
       className={clsx(
         baseBtn,
         page === current
-          ? 'bg-[#6b21a8] border-[#6b21a8] text-white'
-          : 'bg-[#1a1a1a] border-[#3a3a3a] text-gray-300 hover:bg-[#2a2a2a]'
+          ? 'bg-[var(--color-gothic-amethyst)] border-[var(--color-gothic-amethyst)] text-white shadow-[0_0_12px_var(--color-gothic-amethyst)/30]'
+          : 'bg-[var(--color-gothic-obsidian)] border-[var(--color-gothic-gunmetal)] text-[var(--color-gothic-silver)] hover:bg-[var(--color-gothic-iron)] hover:border-[var(--color-gothic-pewter)] hover:text-[var(--color-gothic-chrome)]'
       )}
     >
       {page}
@@ -109,7 +132,7 @@ function PageButton({ page, current, onClick }) {
    ======================= */
 
 const baseBtn =
-  'min-w-[40px] px-3 py-2 border rounded-md text-sm font-medium transition-colors';
+  'min-w-[36px] sm:min-w-[40px] px-2 sm:px-3 py-1.5 sm:py-2 border rounded-md text-xs sm:text-sm font-medium transition-all duration-300';
 
 const disabledBtn =
   'opacity-50 cursor-not-allowed';

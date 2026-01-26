@@ -1,34 +1,90 @@
 // app/api/coupons/apply/route.js
 import { NextResponse } from 'next/server';
-import couponService from '@/domain/services/coupon.service.js';
 import { connectDB } from '@/lib/mongodb';
+import Coupon from '@/models/Coupon';
 
-/**
- * POST /api/coupons/apply
- * Aplicar un cupón (incrementa el contador de usos)
- */
 export async function POST(request) {
   try {
     await connectDB();
 
-    // TODO: Agregar middleware de autenticación
-    // const user = await verifyAuth(request);
-    // if (!user) {
-    //   return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
-    // }
+    const body = await request.json();
+    const { code, items, service_id, amount, type = 'product' } = body;
 
-    const { code, amount } = await request.json();
-
-    if (!code || amount === undefined) {
+    if (!code) {
       return NextResponse.json(
-        { error: 'Se requieren los campos code y amount' },
+        { error: 'Coupon code is required' },
         { status: 400 }
       );
     }
 
-    const result = await couponService.applyCoupon(code, amount);
+    // Buscar cupón
+    const coupon = await Coupon.findOne({ code: code.toUpperCase() });
 
-    return NextResponse.json(result, { status: 200 });
+    if (!coupon) {
+      return NextResponse.json(
+        { error: 'Invalid coupon code' },
+        { status: 404 }
+      );
+    }
+
+    // Validar cupón
+    if (!coupon.is_valid) {
+      return NextResponse.json(
+        { error: 'Coupon is not valid or has expired' },
+        { status: 400 }
+      );
+    }
+
+    let totalAmount = 0;
+    let discount = 0;
+
+    // PRODUCTOS: Calcular total del carrito
+    if (type === 'product' && items && items.length > 0) {
+      totalAmount = items.reduce((sum, item) => {
+        return sum + (item.price * item.quantity);
+      }, 0);
+    }
+    
+    // SERVICIOS: Usar el monto directo
+    if (type === 'service' && amount) {
+      totalAmount = amount;
+    }
+
+    // Validar monto mínimo
+    if (totalAmount < coupon.minimum_amount) {
+      return NextResponse.json(
+        { 
+          error: `Minimum amount required: $${coupon.minimum_amount}` 
+        },
+        { status: 400 }
+      );
+    }
+
+    // Calcular descuento
+    discount = coupon.calculateDiscount(totalAmount);
+    const finalAmount = Math.max(0, totalAmount - discount);
+
+    // Incrementar contador de usos
+    coupon.uses_count += 1;
+    await coupon.save();
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        coupon: {
+          code: coupon.code,
+          type: coupon.type,
+          value: coupon.value
+        },
+        original_amount: totalAmount,
+        discount,
+        final_amount: finalAmount,
+        savings_percentage: totalAmount > 0 
+          ? ((discount / totalAmount) * 100).toFixed(2) 
+          : 0
+      }
+    }, { status: 200 });
+
   } catch (error) {
     console.error('Error applying coupon:', error);
     return NextResponse.json(
@@ -37,4 +93,3 @@ export async function POST(request) {
     );
   }
 }
-

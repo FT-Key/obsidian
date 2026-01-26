@@ -10,15 +10,15 @@ import Badge from '@/components/ui/Badge';
  * ProductCard Component - Refinado con imagen sobresaliente
  */
 const ProductCard = ({
-  image,
+  image = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop',
   imageAlt = 'Producto',
-  title,
-  description,
-  price,
-  originalPrice,
+  title = 'Producto Premium',
+  description = 'Descripción del producto con características destacadas',
+  price = 299,
+  originalPrice = 399,
   discount,
-  rating = 0,
-  reviews = 0,
+  rating = 4.5,
+  reviews = 128,
   badge,
   variant = 'default',
   imagePosition = 'float',
@@ -44,34 +44,34 @@ const ProductCard = ({
 
   const variants = {
     default: `
-      bg-gradient-to-br from-[#1a1a1a] via-[#121212] to-[#0a0a0a]
-      border border-[#2d2d2d]
+      bg-gradient-to-br from-[var(--color-gothic-obsidian)] via-[var(--color-gothic-shadow)] to-[var(--color-gothic-abyss)]
+      border border-[var(--color-gothic-steel)]
       shadow-[0_6px_20px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.05)]
-      ${hoverable ? 'hover:border-[#3a3a3a] hover:shadow-[0_8px_24px_rgba(0,0,0,0.8),0_0_15px_rgba(107,33,168,0.15)] hover:-translate-y-1' : ''}
+      ${hoverable ? 'hover:border-[var(--color-gothic-gunmetal)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.8),0_0_15px_rgba(107,33,168,0.15)] hover:-translate-y-1' : ''}
     `,
     light: `
-      bg-gradient-to-br from-[#e5e7eb] via-[#d1d5db] to-[#9ca3af]
-      border border-[#6b7280]
+      bg-gradient-to-br from-[var(--color-gothic-chrome)] via-[var(--color-gothic-silver)] to-[var(--color-gothic-smoke)]
+      border border-[var(--color-gothic-ash)]
       shadow-[0_6px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4)]
-      ${hoverable ? 'hover:border-[#4b5563] hover:shadow-[0_8px_24px_rgba(0,0,0,0.7)] hover:-translate-y-1' : ''}
+      ${hoverable ? 'hover:border-[var(--color-gothic-pewter)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.7)] hover:-translate-y-1' : ''}
     `,
     elevated: `
-      bg-gradient-to-br from-[#2d2d2d] via-[#242424] to-[#1a1a1a]
-      border border-[#3a3a3a]
+      bg-gradient-to-br from-[var(--color-gothic-steel)] via-[var(--color-gothic-iron)] to-[var(--color-gothic-obsidian)]
+      border border-[var(--color-gothic-gunmetal)]
       shadow-[0_8px_24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)]
-      ${hoverable ? 'hover:border-[#4a4a4a] hover:shadow-[0_10px_28px_rgba(0,0,0,0.9),0_0_15px_rgba(107,33,168,0.2)] hover:-translate-y-1' : ''}
+      ${hoverable ? 'hover:border-[var(--color-gothic-pewter)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.9),0_0_15px_rgba(107,33,168,0.2)] hover:-translate-y-1' : ''}
     `,
     glass: `
-      bg-[#1a1a1a]/60 backdrop-blur-xl
-      border border-[#2d2d2d]/70
+      bg-[var(--color-gothic-obsidian)]/60 backdrop-blur-xl
+      border border-[var(--color-gothic-steel)]/70
       shadow-[0_6px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
-      ${hoverable ? 'hover:bg-[#1a1a1a]/80 hover:border-[#3a3a3a]/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.7),0_0_12px_rgba(107,33,168,0.15)]' : ''}
+      ${hoverable ? 'hover:bg-[var(--color-gothic-obsidian)]/80 hover:border-[var(--color-gothic-gunmetal)]/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.7),0_0_12px_rgba(107,33,168,0.15)]' : ''}
     `,
     premium: `
-      bg-gradient-to-br from-[#2d1a2d] via-[#1a1a1a] to-[#0a0a0a]
-      border border-[#6b21a8]/30
+      bg-gradient-to-br from-[#2d1a2d] via-[var(--color-gothic-obsidian)] to-[var(--color-gothic-abyss)]
+      border border-[var(--color-gothic-amethyst)]/30
       shadow-[0_6px_20px_rgba(107,33,168,0.2),inset_0_1px_0_rgba(167,139,250,0.08)]
-      ${hoverable ? 'hover:border-[#6b21a8]/50 hover:shadow-[0_8px_24px_rgba(107,33,168,0.3),0_0_15px_rgba(107,33,168,0.2)]' : ''}
+      ${hoverable ? 'hover:border-[var(--color-gothic-amethyst)]/50 hover:shadow-[0_8px_24px_rgba(107,33,168,0.3),0_0_15px_rgba(107,33,168,0.2)]' : ''}
     `
   };
 
@@ -93,7 +93,7 @@ const ProductCard = ({
       {/* Decoraciones góticas en esquinas superiores */}
       <div className={clsx(
         "absolute top-0 left-0 w-16 h-16 border-l border-t opacity-30 group-hover:opacity-50 transition-all duration-300 z-10",
-        variant === 'light' ? 'border-[#6b7280]' : 'border-[#3a3a3a]'
+        variant === 'light' ? 'border-[var(--color-gothic-ash)]' : 'border-[var(--color-gothic-gunmetal)]'
       )}>
         <div className={clsx(
           "absolute top-0 left-0 w-[3px] h-[3px] rounded-full transform -translate-x-[1.5px] -translate-y-[1.5px]",
@@ -102,7 +102,7 @@ const ProductCard = ({
       </div>
       <div className={clsx(
         "absolute top-0 right-0 w-16 h-16 border-r border-t opacity-30 group-hover:opacity-50 transition-all duration-300 z-10",
-        variant === 'light' ? 'border-[#6b7280]' : 'border-[#3a3a3a]'
+        variant === 'light' ? 'border-[var(--color-gothic-ash)]' : 'border-[var(--color-gothic-gunmetal)]'
       )}>
         <div className={clsx(
           "absolute top-0 right-0 w-[3px] h-[3px] rounded-full transform translate-x-[1.5px] -translate-y-[1.5px]",
@@ -124,7 +124,7 @@ const ProductCard = ({
         {onWishlist && (
           <button
             onClick={onWishlist}
-            className="w-10 h-10 bg-[#1a1a1a]/90 backdrop-blur-sm border border-[#2d2d2d] rounded-lg flex items-center justify-center text-gray-400 hover:text-red-300 hover:border-[#7c2d12] hover:shadow-[0_0_10px_rgba(153,27,27,0.3)] transition-all duration-300"
+            className="w-10 h-10 bg-[var(--color-gothic-obsidian)]/90 backdrop-blur-sm border border-[var(--color-gothic-steel)] rounded-lg flex items-center justify-center text-gray-400 hover:text-red-300 hover:border-[var(--color-gothic-wine)] hover:shadow-[0_0_10px_rgba(153,27,27,0.3)] transition-all duration-300"
             aria-label="Agregar a favoritos"
           >
             <Heart className="w-5 h-5" />
@@ -133,7 +133,7 @@ const ProductCard = ({
         {onQuickView && (
           <button
             onClick={onQuickView}
-            className="w-10 h-10 bg-[#1a1a1a]/90 backdrop-blur-sm border border-[#2d2d2d] rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-200 hover:border-[#3a3a3a] hover:shadow-[0_0_10px_rgba(107,33,168,0.2)] transition-all duration-300"
+            className="w-10 h-10 bg-[var(--color-gothic-obsidian)]/90 backdrop-blur-sm border border-[var(--color-gothic-steel)] rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-200 hover:border-[var(--color-gothic-gunmetal)] hover:shadow-[0_0_10px_rgba(107,33,168,0.2)] transition-all duration-300"
             aria-label="Vista rápida"
           >
             <Eye className="w-5 h-5" />
@@ -162,7 +162,7 @@ const ProductCard = ({
           }}
         >
           {/* Fondo con gradiente */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2d2d2d]/30 via-transparent to-[#6b21a8]/10 rounded-lg opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-gothic-steel)]/30 via-transparent to-[var(--color-gothic-amethyst)]/10 rounded-lg opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
           
           {/* Imagen del producto */}
           <img
@@ -185,8 +185,8 @@ const ProductCard = ({
 
       {/* Línea decorativa divisoria */}
       <div className="relative my-4 mx-6 flex-shrink-0">
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#3a3a3a] to-transparent group-hover:via-[#6b21a8]/40 transition-colors duration-300"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[3px] h-[3px] bg-white/15 rounded-full shadow-[0_0_4px_rgba(255,255,255,0.2)] group-hover:bg-[#6b21a8]/60 group-hover:shadow-[0_0_8px_rgba(107,33,168,0.5)] transition-all duration-300"></div>
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-[var(--color-gothic-gunmetal)] to-transparent group-hover:via-[var(--color-gothic-amethyst)]/40 transition-colors duration-300"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[3px] h-[3px] bg-white/15 rounded-full shadow-[0_0_4px_rgba(255,255,255,0.2)] group-hover:bg-[var(--color-gothic-amethyst)]/60 group-hover:shadow-[0_0_8px_rgba(107,33,168,0.5)] transition-all duration-300"></div>
       </div>
 
       {/* Contenido del producto */}
@@ -297,7 +297,7 @@ const ProductCard = ({
       {/* Decoraciones góticas inferiores */}
       <div className={clsx(
         "absolute bottom-0 left-0 w-16 h-16 border-l border-b opacity-30 group-hover:opacity-50 transition-all duration-300",
-        variant === 'light' ? 'border-[#6b7280]' : 'border-[#3a3a3a]'
+        variant === 'light' ? 'border-[var(--color-gothic-ash)]' : 'border-[var(--color-gothic-gunmetal)]'
       )}>
         <div className={clsx(
           "absolute bottom-0 left-0 w-[3px] h-[3px] rounded-full transform -translate-x-[1.5px] translate-y-[1.5px]",
@@ -306,7 +306,7 @@ const ProductCard = ({
       </div>
       <div className={clsx(
         "absolute bottom-0 right-0 w-16 h-16 border-r border-b opacity-30 group-hover:opacity-50 transition-all duration-300",
-        variant === 'light' ? 'border-[#6b7280]' : 'border-[#3a3a3a]'
+        variant === 'light' ? 'border-[var(--color-gothic-ash)]' : 'border-[var(--color-gothic-gunmetal)]'
       )}>
         <div className={clsx(
           "absolute bottom-0 right-0 w-[3px] h-[3px] rounded-full transform translate-x-[1.5px] translate-y-[1.5px]",

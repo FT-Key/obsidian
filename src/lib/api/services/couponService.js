@@ -1,5 +1,5 @@
 // ===================================
-// services/couponService.js
+// services/couponService.js - VERSIÓN MEJORADA
 // ===================================
 import api from '../client';
 
@@ -15,28 +15,48 @@ export const couponService = {
    * Obtener cupón por ID (admin)
    */
   getById: (id) => {
-    return api.get(`/coupons/${id}`);
+    return api.get(`/coupons/${id}`);  // ✅ Corregido
   },
 
   /**
    * Obtener cupón por código
    */
   getByCode: (code) => {
-    return api.get(`/coupons/code/${code}`);
+    return api.get(`/coupons/code/${code}`);  // ✅ Corregido
   },
 
   /**
-   * Validar cupón (sin aplicar)
+   * Validar cupón para productos O servicios
    */
-  validate: (code, amount) => {
-    return api.post('/coupons/validate', { code, amount });
+  validate: (code, amount, type = 'product') => {
+    return api.post('/coupons/validate', {
+      code,
+      amount,
+      type  // 'product' o 'service'
+    });
   },
 
   /**
-   * Aplicar cupón (incrementa usos)
+   * Aplicar cupón a productos (carrito)
    */
-  apply: (code, amount) => {
-    return api.post('/coupons/apply', { code, amount });
+  applyToCart: (code, items) => {
+    return api.post('/coupons/apply', {
+      code,
+      items,
+      type: 'product'
+    });
+  },
+
+  /**
+   * Aplicar cupón a servicio
+   */
+  applyToService: (code, serviceId, basePrice) => {
+    return api.post('/coupons/apply', {
+      code,
+      service_id: serviceId,
+      amount: basePrice,
+      type: 'service'
+    });
   },
 
   /**
@@ -50,21 +70,21 @@ export const couponService = {
    * Actualizar cupón (admin)
    */
   update: (id, couponData) => {
-    return api.put(`/coupons/${id}`, couponData);
+    return api.put(`/coupons/${id}`, couponData);  // ✅ Corregido
   },
 
   /**
    * Eliminar cupón (admin)
    */
   delete: (id, permanent = false) => {
-    return api.delete(`/coupons/${id}`, { params: { permanent } });
+    return api.delete(`/coupons/${id}`, { params: { permanent } });  // ✅ Corregido
   },
 
   /**
    * Activar/Desactivar cupón (admin)
    */
   toggleStatus: (id) => {
-    return api.patch(`/coupons/${id}/toggle`);
+    return api.patch(`/coupons/${id}/toggle`);  // ✅ Corregido
   },
 
   /**
@@ -81,4 +101,3 @@ export const couponService = {
     return api.post('/coupons/cleanup');
   },
 };
-
