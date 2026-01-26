@@ -1,7 +1,7 @@
 // app/api/coupons/apply/route.js
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Coupon from '@/models/Coupon';
+import Coupon from '@/domanin/models/Coupon';
 
 export async function POST(request) {
   try {
